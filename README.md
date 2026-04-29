@@ -269,7 +269,7 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 **Luiz Claudio Soares de Almeida**  
 PPGIa — PUCPR  
-📧 luiz.almeida@pucpr.edu.br  
+📧 soares.claudio@pucpr.edu.br  
 🔗 [github.com/luizcsalmeida](https://github.com/luizcsalmeida)
 
 ---
