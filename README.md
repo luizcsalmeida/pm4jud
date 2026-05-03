@@ -33,18 +33,20 @@ O framework adapta o **PM4SOS** (Ferronato, 2022) — originalmente aplicado a c
 
 ```
 DATAJUD/CNJ ──► Fase 1 ──► Fase 2 ──► Fase 3 ──► Fase 4 ──► Fase 5 ──► Decisão
-               Preparação  Mineração  Simulação  Otimização  Visual.   Magistrado
+               Preparação  Mineração  Simulação  Otimização  Análise   Magistrado
 ```
 
 | Fase | Descrição | Programas |
 |------|-----------|-----------|
-| **1 — Preparação** | Extração do DATAJUD, tratamento de complexidade, complementação para LTLf | P1, P2, Sim2Log, Complement |
-| **2 — Mineração** | Descoberta do modelo AS-IS, modelo organizacional, parâmetros, estado corrente, verificação LTLf | P3, P4b |
-| **3 — Simulação** | Modelo DES M/M/c com prioridade HC, verificação, validação, gatilho | P5 |
-| **4 — Otimização** | CBR + NSGA-II/AMGA2/SPEA2, 90 replicações, fronteira de Pareto | P6, P7 |
-| **5 — Visualização** | Dashboard Nível 1 (DATAJUD) e Nível 2 (SAGWeb), configurações candidatas | VIZ |
+| **1 — Preparação de dados** | Extração DATAJUD → XES, classificação por matéria (D'Castro), complementação de eventos internos [SIM-LTLf] ¹ | P1, P2, [P3] |
+| **2 — Mineração de processos** | Descoberta do modelo AS-IS por estrato (IMf), parâmetros DES, verificação LTLf (C1–C9) | P4, P5 |
+| **3 — Simulação computacional** | Geração de traços sintéticos [SIM-DES], modelo DES M/M/c com prioridade HC, 30 replicações por configuração | Sim2Log, P6 |
+| **4 — Otimização multiobjetivo** | CBR + NSGA-II / AMGA2 / SPEA2, 90 execuções (GC + GE1 + GE2 + GE3), fronteira de Pareto | P7 |
+| **5 — Análise e visualização** | Shapiro-Wilk, ANOVA/Kruskal-Wallis, Bonferroni α=0,05, dashboards Nível 1 e 2 | P8, VIZ |
 
-> A **Ontologia PM4JUD** (7 módulos OWL/RDF, baseados em MNI/CNJ e TPU/CNJ) opera como camada semântica transversal às Fases 1 e 2.
+> ¹ `[P3]` indica execução condicional: somente no **Nível 1 (DATAJUD/CNJ)**. No Nível 2 (SAGWeb), os eventos internos chegam reais e a complementação sintética é dispensada.
+
+> A **Ontologia PM4JUD** (7 módulos OWL/RDF, baseados em MNI/CNJ e TPU/CNJ) opera como camada semântica transversal a todas as fases, com SPARQL em runtime nos programas P1, P3, P5, P6 e P7.
 
 ---
 
@@ -52,45 +54,54 @@ DATAJUD/CNJ ──► Fase 1 ──► Fase 2 ──► Fase 3 ──► Fase 4 
 
 | Programa | Módulo | Descrição |
 |----------|--------|-----------|
-| `P1` | [`etl/pm4jud_etl.py`](etl/pm4jud_etl.py) | Extração DATAJUD → XES; filtro por ministro relator |
-| `P2` | [`dcastro/pm4jud_dcastro.py`](dcastro/pm4jud_dcastro.py) | Tratamento de complexidade: 3 perfis D'Castro + NLP |
-| `P3` | [`pm/pm4jud_pm.py`](pm/pm4jud_pm.py) | IMf (k=0.2), DFG, modelo organizacional, parâmetros |
-| `P4a` | [`complement/pm4jud_complement.py`](complement/pm4jud_complement.py) | Injeção de atributos `[SIM-LTLf]` nos traços reais |
-| `P4b` | [`ltlf/pm4jud_ltlf.py`](ltlf/pm4jud_ltlf.py) | Verificação Declare — Metas CNJ + RISTJ arts. 91/110/111 |
-| `P5` | [`des/pm4jud_des.py`](des/pm4jud_des.py) | Modelo DES em SimPy; verificação e validação |
-| `P6` | [`opt/pm4jud_opt.py`](opt/pm4jud_opt.py) | 90 execuções: GC + NSGA-II + AMGA2 + SPEA2 |
-| `P7` | [`stat/pm4jud_stat.py`](stat/pm4jud_stat.py) | Shapiro-Wilk, ANOVA/Kruskal-Wallis, Bonferroni |
-| — | [`sim2log/pm4jud_sim2log.py`](sim2log/pm4jud_sim2log.py) | Geração de eventos `[SIM-DES]` para simulação |
-| — | [`viz/pm4jud_viz.py`](viz/pm4jud_viz.py) | Dashboard Nível 1 e 2 (PDF + HTML interativo) |
+| `P1` | [`etl/pm4jud_etl.py`](etl/pm4jud_etl.py) | Extração DATAJUD → XES; filtro por ministro relator; deduplicação + Parquet |
+| `P2` | [`dcastro/pm4jud_dcastro.py`](dcastro/pm4jud_dcastro.py) | Classificação por matéria: 3 perfis D'Castro + TF-IDF; *k* calibrado por gabinete; MF1 ≥ 0,75 |
+| `[P3]` | [`complement/pm4jud_complement.py`](complement/pm4jud_complement.py) | Imputação de eventos internos [SIM-LTLf]; escaninhos e workflow de documentos; SPARQL Módulo 6 (C1–C9) — **somente Nível 1** |
+| `P4` | [`pm/pm4jud_pm.py`](pm/pm4jud_pm.py) | IMf por estrato (*cl*); DFG; parâmetros *p_v · e_o · e_s · e_c* |
+| `P5` | [`ltlf/pm4jud_ltlf.py`](ltlf/pm4jud_ltlf.py) | Verificação Declare — C1–C9 (9 regras); SPARQL Módulo 7; diagnóstico κ · η |
+| — | [`sim2log/pm4jud_sim2log.py`](sim2log/pm4jud_sim2log.py) | Geração de traços sintéticos [SIM-DES] a partir de *p_v* + *e_s* |
+| `P6` | [`des/pm4jud_des.py`](des/pm4jud_des.py) | Modelo DES em SimPy (M/M/c · prioridade HC); SPARQL Q4 (restrições hard); verificação e validação; 30 replicações por configuração |
+| `P7` | [`opt/pm4jud_opt.py`](opt/pm4jud_opt.py) | 90 execuções: GC + GE1 (NSGA-II) + GE2 (AMGA2) + GE3 (SPEA2); CBR · KNN k=5 · TOPSIS |
+| `P8` | [`stat/pm4jud_stat.py`](stat/pm4jud_stat.py) | Shapiro-Wilk; ANOVA / Kruskal-Wallis; Bonferroni α=0,05 |
+| — | [`viz/pm4jud_viz.py`](viz/pm4jud_viz.py) | Dashboard Nível 1 (DATAJUD) e Nível 2 (SAGWeb) — PDF + HTML interativo |
+
+> ⚠️ **[SIM-LTLf] ≠ [SIM-DES]** — São estratégias de simulação distintas com finalidades, programas e fases diferentes.
+> - `[SIM-LTLf]`: completa eventos internos ausentes no DATAJUD (P3 · Fase 1 · somente Nível 1)
+> - `[SIM-DES]`: gera cenários hipotéticos para o otimizador (Sim2Log + P6 · Fase 3 · ambos os níveis)
+>
+> As marcações não devem ser confundidas nem usadas de forma cruzada.
 
 ---
 
 ## Dados — estratégia bifásica
 
-### Fase 1 (atual) — dados públicos
+### Nível 1 (atual) — dados públicos DATAJUD/CNJ
+
 - **Fonte:** API pública DATAJUD/CNJ (Resolução CNJ nº 331/2020)
-- **Escopo:** acervo completo dos gabinetes dos ministros Reynaldo Soares da Fonseca e Joel Ilan Paciornik (5.ª Turma) e Rogerio Schietti Cruz (6.ª Turma)
-- **Período:** janeiro/2023 a dezembro/2024
+- **Escopo:** acervo 2024 dos gabinetes piloto (HC · RHC · REsp Criminal)
+- **Volume:** 32.031 processos · 728.097 eventos
 - **Aprovação ética:** não requerida (dados públicos)
 - **Acesso:** chave pública emitida pelo DPJ/CNJ em https://datajud-wiki.cnj.jus.br/api-publica/
 
-### Fase 2 (futura) — dados operacionais
+### Nível 2 (futuro) — dados operacionais SAGWeb/STJ
+
 - **Fonte:** SAGWeb/STJ (Sistema de Automação de Gabinetes Web)
-- **Conteúdo:** logs de ações sistêmicas dos assessores; movimentos internos; escaninhos
+- **Conteúdo:** logs de ações sistêmicas dos assessores; movimentos internos; escaninhos; workflow de documentos
 - **Condição:** autorização formal do STJ + aprovação CEP via Plataforma Brasil
 - **Status:** em tramitação
 
-> ⚠️ Os dados do SAGWeb **não são públicos** e não estão disponíveis neste repositório. Os eventos sintéticos gerados pela PM4JUD-Sim2Log são identificados pela marcação `[SIM-DES]`; os eventos complementados para verificação LTLf pela marcação `[SIM-LTLf]`. As duas marcações não devem ser confundidas nem usadas de forma cruzada.
+> Os dados do SAGWeb **não são públicos** e não estão disponíveis neste repositório. A estrutura XES é idêntica nos dois níveis; eventos sintéticos [SIM-LTLf] são identificados por `pm4jud:sim_flag = true`, ausente nos eventos reais do Nível 2.
 
 ---
 
 ## Gabinetes piloto
 
-| Gabinete | Ministro | Turma | Seção |
-|----------|----------|-------|-------|
-| GAB-1 | Reynaldo Soares da Fonseca | 5.ª Turma | 3.ª Seção (Criminal) |
-| GAB-2 | Joel Ilan Paciornik | 5.ª Turma | 3.ª Seção (Criminal) |
-| GAB-3 | Rogerio Schietti Cruz | 6.ª Turma | 3.ª Seção (Criminal) |
+| Gabinete | Ministro | Turma | Seção | Processos (2024) | *k* D'Castro | MF1 |
+|----------|----------|-------|-------|-------------------|--------------|-----|
+| GAB-1 | Reynaldo Soares da Fonseca | 5.ª Turma | 3.ª Seção (Criminal) | 11.395 | 0,20 | 92,1% |
+| GAB-2 | Sebastião Reis Júnior (Palheiro) | 6.ª Turma | 3.ª Seção (Criminal) | 10.148 | 0,30 | 77,5% |
+| GAB-3 | Rogerio Schietti Cruz | 6.ª Turma | 3.ª Seção (Criminal) | 10.488 | 0,25 | 81,9% |
+| **Total** | | | | **32.031** | | |
 
 ---
 
@@ -107,10 +118,10 @@ DATAJUD/CNJ ──► Fase 1 ──► Fase 2 ──► Fase 3 ──► Fase 4 
 
 ## Protocolo experimental
 
-- **Design:** GC (controle) + GE1 (NSGA-II) + GE2 (AMGA2) + GE3 (SPEA2)
-- **Replicações:** 30 por grupo → 90 execuções totais
+- **Design:** GC (controle · sem otimização) + GE1 (NSGA-II) + GE2 (AMGA2) + GE3 (SPEA2)
+- **Replicações:** 30 por grupo → **90 execuções totais**
 - **Significância:** α = 0,05 com correção de Bonferroni (α_adj ≈ 0,017)
-- **Testes:** Shapiro-Wilk → ANOVA ou Kruskal-Wallis → post-hoc Tukey/Dunn
+- **Testes:** Shapiro-Wilk → ANOVA ou Kruskal-Wallis → post-hoc Tukey / Dunn
 
 ---
 
@@ -146,32 +157,38 @@ lxml>=4.9.0
 
 ---
 
-## Execução rápida — Fase 1
+## Execução — Nível 1 (DATAJUD/CNJ)
 
 ```bash
-# 1. Extração do DATAJUD (requer chave API pública do DPJ/CNJ)
-python etl/pm4jud_etl.py --api-key <SUA_CHAVE_CNJ>
+# P1 — Extração DATAJUD (requer chave API pública do DPJ/CNJ)
+python etl/pm4jud_etl.py --api-key <SUA_CHAVE_CNJ> --gabinete reynaldo
 
-# 2. Tratamento de complexidade (D'Castro)
-python dcastro/pm4jud_dcastro.py --input output/pm4jud_log_gab_reynaldo.xes
+# P2 — Classificação por matéria (D'Castro + TF-IDF)
+python dcastro/pm4jud_dcastro.py --input output/pm4jud_log_reynaldo.xes
 
-# 3. Mineração de processos
-python pm/pm4jud_pm.py --input output/log_filtrado_reynaldo.xes
+# [P3] — Complementação de eventos internos [SIM-LTLf]  ← somente Nível 1
+python complement/pm4jud_complement.py --input output/log_dcastro_reynaldo.xes
 
-# 4a. Complementação para LTLf
-python complement/pm4jud_complement.py --input output/log_filtrado_reynaldo.xes
+# P4 — Mineração de processos (IMf por estrato)
+python pm/pm4jud_pm.py --input output/log_complement_reynaldo.xes
 
-# 4b. Verificação declarativa LTLf
-python ltlf/pm4jud_ltlf.py --input output/log_complementado_reynaldo.xes
+# P5 — Verificação LTLf (C1–C9)
+python ltlf/pm4jud_ltlf.py --input output/log_complement_reynaldo.xes
 
-# 5. Simulação DES
+# Sim2Log — Geração de traços sintéticos [SIM-DES]
+python sim2log/pm4jud_sim2log.py --params output/parametros_reynaldo.json
+
+# P6 — Simulação DES (30 replicações por configuração)
 python des/pm4jud_des.py --params output/parametros_reynaldo.json
 
-# 6. Otimização (90 execuções)
+# P7 — Otimização multiobjetivo (90 execuções: GC + GE1 + GE2 + GE3)
 python opt/pm4jud_opt.py --des output/modelo_des_reynaldo.pkl
 
-# 7. Análise estatística
+# P8 — Análise estatística (Shapiro-Wilk + ANOVA/KW + Bonferroni)
 python stat/pm4jud_stat.py --results output/resultados_90exec.csv
+
+# VIZ — Dashboard PDF + HTML interativo
+python viz/pm4jud_viz.py --results output/resultados_90exec.csv
 ```
 
 ---
@@ -181,15 +198,15 @@ python stat/pm4jud_stat.py --results output/resultados_90exec.csv
 ```
 pm4jud/
 ├── etl/                    # P1 — Extração DATAJUD → XES
-├── dcastro/                # P2 — Tratamento D'Castro + NLP
-├── pm/                     # P3 — Mineração de processos (IMf)
-├── complement/             # P4a — Complementação [SIM-LTLf]
-├── ltlf/                   # P4b — Verificação declarativa LTLf
-├── sim2log/                # PM4JUD-Sim2Log — geração [SIM-DES]
-├── des/                    # P5 — Simulação DES (SimPy)
-├── opt/                    # P6 — Otimização NSGA-II/AMGA2/SPEA2
-├── stat/                   # P7 — Análise estatística
-├── viz/                    # PM4JUD-VIZ — dashboards
+├── dcastro/                # P2 — Classificação D'Castro + TF-IDF
+├── complement/             # [P3] — Complementação [SIM-LTLf] (Nível 1)
+├── pm/                     # P4 — Mineração de processos (IMf)
+├── ltlf/                   # P5 — Verificação declarativa LTLf (C1–C9)
+├── sim2log/                # Sim2Log — Geração de traços [SIM-DES]
+├── des/                    # P6 — Simulação DES (SimPy)
+├── opt/                    # P7 — Otimização NSGA-II / AMGA2 / SPEA2
+├── stat/                   # P8 — Análise estatística
+├── viz/                    # VIZ — Dashboards PDF + HTML
 ├── ontology/               # Ontologia PM4JUD — 7 módulos OWL/RDF
 ├── figuras/                # Scripts de geração das figuras da dissertação
 ├── output/                 # Saídas geradas (ignorado pelo .gitignore)
@@ -202,19 +219,17 @@ pm4jud/
 
 ## Ontologia PM4JUD
 
-A Ontologia PM4JUD é composta por **7 módulos OWL/RDF** desenvolvidos com base no **Modelo Nacional de Interoperabilidade (MNI/CNJ)** e nas **Tabelas Processuais Unificadas (TPU/CNJ)**:
+A Ontologia PM4JUD é composta por **7 módulos OWL/RDF** desenvolvidos em **Protégé 5.6.7** (reasoner ELK 0.6.0) com base no **Modelo Nacional de Interoperabilidade (MNI/CNJ)** e nas **Tabelas Processuais Unificadas (TPU/CNJ)**. A estratégia de *punning* OWL 2 DL (Lenzerini et al., 2021) permite que cada entrada TPU opere simultaneamente como classe e como indivíduo.
 
-| Módulo | Descrição |
-|--------|-----------|
-| 1 — Núcleo Estrutural | Entidades MNI 2.2.2: ProcessoJudicial, Parte, Movimento, Documento |
-| 2 — Classes Processuais | Tabela de Classes TPU/CNJ (133 classes habilitadas STJ) |
-| 3 — Assuntos Processuais | Tabela de Assuntos TPU/CNJ (3.278 assuntos habilitados STJ) |
-| 4 — Movimentos Processuais | Tabela de Movimentos TPU/CNJ (616 movimentos habilitados STJ) |
-| 5 — Documentos Processuais | Tabela de Documentos TPU/CNJ (1.361 documentos habilitados STJ) |
-| 6 — Especialidades | Estratificação Criminal / Cível / Tributário / Previdenciário |
-| 7 — Restrições Regimentais e Metas | 5 regras RISTJ + Metas CNJ 1, 2 e 4 |
-
-Os arquivos OWL estão em [`ontology/`](ontology/) e foram desenvolvidos em Protégé 5.6.7 com validação pelo reasoner ELK 0.6.0.
+| Módulo | Descrição | SPARQL em runtime |
+|--------|-----------|-------------------|
+| 1 — Núcleo Estrutural | Entidades MNI 2.2.2: ProcessoJudicial, Parte, Movimento, Documento | — |
+| 2 — Classes Processuais | Tabela de Classes TPU/CNJ (133 classes habilitadas STJ) | — |
+| 3 — Assuntos Processuais | Tabela de Assuntos TPU/CNJ (3.278 assuntos habilitados STJ) | — |
+| 4 — Movimentos Processuais | Tabela de Movimentos TPU/CNJ (616 movimentos habilitados STJ) | P1 |
+| 5 — Documentos Processuais | Tabela de Documentos TPU/CNJ (1.361 documentos habilitados STJ) | — |
+| 6 — Especialidades | Estratificação Criminal / Cível / Tributário / Previdenciário; regras C1–C9 | P3 |
+| 7 — Restrições Regimentais e Metas | 5 regras RISTJ (arts. 91 · 177 · 202 · 203 · 34); Metas CNJ 1, 2 e 4 | P5 · P6 · P7 |
 
 ---
 
@@ -233,8 +248,6 @@ Os arquivos OWL estão em [`ontology/`](ontology/) e foram desenvolvidos em Prot
 ---
 
 ## Citação
-
-Se este trabalho for útil para sua pesquisa, cite:
 
 ```bibtex
 @mastersthesis{almeida2026pm4jud,
@@ -256,6 +269,7 @@ Se este trabalho for útil para sua pesquisa, cite:
 - PEFFERS, K. et al. A Design Science Research Methodology for Information Systems Research. *Journal of Management Information Systems*, v. 24, n. 3, p. 45–77, 2007.
 - VAN DER AALST, W. M. P. *Process Mining: Data Science in Action*. 2. ed. Berlin: Springer, 2016.
 - D'CASTRO, R. J. et al. Process Mining Discovery in Judicial Domains. *BRACIS*, 2018.
+- LENZERINI, M. et al. Metamodeling in OWL 2 QL via Punning. *Artificial Intelligence*, v. 292, p. 103432, 2021.
 
 ---
 
