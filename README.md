@@ -348,9 +348,9 @@ pm4jud/
 ├── .env
 ├── .env.example
 ├── LICENSE
-├── pyrightconfig.json← configuração dos pacotes das classes python
 ├── requirements.txt
-└── launch.json        ← configurações VS Code (P1–P9)
+├── README.md
+├── pyrightconfig.json← configuração dos pacotes das classes python
 ```
 
 ---
