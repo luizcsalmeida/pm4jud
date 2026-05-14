@@ -2,47 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "UTIL — Diagnóstico cobertura MAPA_TPU vs corpus",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_diagnostico_tpu.py",
-            "args": [
-                "--input",
-                "${workspaceFolder}/output",
-                "--output",
-                "${workspaceFolder}/output"
-            ],
-            "envFile": "${workspaceFolder}/.env",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "UTIL — Discovery validar filtros ETL (API DATAJUD)",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_discovery.py",
-            "envFile": "${workspaceFolder}/.env",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "UTIL — Conciliação TPU (Dados × OWL × CANONICAL_MAP)",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_conciliacao_tpu.py",
-            "args": [
-                "--input",
-                "${workspaceFolder}/output",
-                "--output",
-                "${workspaceFolder}/output",
-                "--ontologia",
-                "${workspaceFolder}/ontologia"
-            ],
-            "envFile": "${workspaceFolder}/.env",
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
             "name": "P1 — ETL Etapa 1 (extrai DATAJUD → parquet)",
             "type": "debugpy",
             "request": "launch",
@@ -103,7 +62,7 @@
             "name": "P2 — REFINE_1 Completo (3 gabinetes — k calibrados)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -120,7 +79,7 @@
             "name": "P2 — REFINE_1 DEV Rápido (reynaldo, threshold=0,60)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -142,7 +101,7 @@
             "name": "P2 — REFINE_1 FINAL Dissertação (3 gabinetes — k calibrados, threshold=0,80)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -162,7 +121,7 @@
             "name": "P2 — REFINE_1 Apenas reynaldo (k=0,20)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -181,7 +140,7 @@
             "name": "P2 — REFINE_1 Apenas palheiro (k=0,30)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -202,7 +161,7 @@
             "name": "P2 — REFINE_1 Apenas schietti (k=0,25)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -223,7 +182,7 @@
             "name": "P2 — REFINE_1 Debug threshold P1=0,70 (agrupamento agressivo)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine1.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -242,7 +201,7 @@
             "name": "P3 — COMPLEMENT Fase 1 Completo (3 gabs, N=38, seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -268,7 +227,7 @@
             "name": "P3 — COMPLEMENT DEV Rápido (reynaldo, N=10, seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -288,7 +247,7 @@
             "name": "P3 — COMPLEMENT FINAL Dissertação (3 gabinetes, N=38, seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -310,7 +269,7 @@
             "name": "P3 — COMPLEMENT Fase 1 Apenas reynaldo (seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -334,7 +293,7 @@
             "name": "P3 — COMPLEMENT Fase 1 Apenas palheiro (seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -358,7 +317,7 @@
             "name": "P3 — COMPLEMENT Fase 1 Apenas schietti (seed=42)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -382,7 +341,7 @@
             "name": "P3 — COMPLEMENT Fase 1 seed=123 (N=38, replicação alternativa)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -408,7 +367,7 @@
             "name": "P3 — COMPLEMENT Fase 1 N=10 assessores (sensibilidade)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -434,7 +393,7 @@
             "name": "P3 — COMPLEMENT Fase 2 Completo (SAGWeb real — pós-STJ+CEP)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "program": "${workspaceFolder}/complement/pm4jud_complement.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -456,7 +415,7 @@
             "name": "P4 — REFINE_2 Completo (3 gabinetes — k calibrados)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -473,7 +432,7 @@
             "name": "P4 — REFINE_2 DEV Rápido (reynaldo — k=0,20)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -493,7 +452,7 @@
             "name": "P4 — REFINE_2 FINAL Dissertação (3 gabinetes — k calibrados)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -509,7 +468,7 @@
             "name": "P4 — REFINE_2 Apenas reynaldo",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -528,7 +487,7 @@
             "name": "P4 — REFINE_2 Apenas palheiro",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -547,7 +506,7 @@
             "name": "P4 — REFINE_2 Apenas schietti",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "program": "${workspaceFolder}/refine/pm4jud_refine2.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -793,7 +752,7 @@
             "name": "P7b — DES Completo (3 gabinetes × 30 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim2log/pm4jud_des.py",
+            "program": "${workspaceFolder}/des/pm4jud_des.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -808,7 +767,7 @@
             "name": "P7b — DES Apenas reynaldo (dev: 5 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim2log/pm4jud_des.py",
+            "program": "${workspaceFolder}/des/pm4jud_des.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -902,7 +861,7 @@
             "name": "P9 — STAT Apenas G (coeficiente de Gini)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -919,7 +878,7 @@
             "name": "P9 — STAT Apenas κ (conformidade regimental)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -936,7 +895,7 @@
             "name": "P9 — STAT Apenas η (aderência Metas CNJ 1/2/4)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",

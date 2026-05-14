@@ -267,17 +267,51 @@ cp .env.example .env
 ### Dependências principais (`requirements.txt`)
 
 ```
-pm4py>=2.7            # mineração de processos (P2, P4, P5, P6, P7a)
-simpy>=4.1            # simulação DES (P7b)
-scipy>=1.12           # estatística (P9): Shapiro-Wilk, ANOVA, Kruskal-Wallis
-numpy>=1.26
-pandas>=2.2
-rdflib>=7.0           # consultas SPARQL à Ontologia (P3, P6)
-lxml>=5.0
-python-dotenv>=1.0
-requests>=2.31        # API DATAJUD (P1)
-pyarrow>=15.0         # backup Parquet (P1)
-declare4py>=1.1       # verificação LTLf alternativa (opcional)
+# =============================================================================
+# requirements.txt — PM4JUD Pipeline
+# Dissertação de Mestrado — PPGIa/PUCPR
+# Autor: Luiz Claudio Soares de Almeida | Ano: 2026
+#
+# Instalação:
+#   pip install -r requirements.txt
+#
+# Python 3.10+  |  versão de referência pm4py: 2.7.8.3
+# =============================================================================
+
+# ── Mineração de processos ────────────────────────────────────────────────────
+pm4py>=2.7             # IMf, conformance Declare, XES I/O (P2, P4, P5, P6, P7a)
+                       # versão de referência: 2.7.8.3
+
+# ── Simulação computacional ───────────────────────────────────────────────────
+simpy>=4.1             # DES M/M/c com prioridade HC (P7b)
+
+# ── Análise estatística ───────────────────────────────────────────────────────
+scipy>=1.12            # Shapiro-Wilk, ANOVA, Kruskal-Wallis, Bonferroni (P9)
+
+# ── Manipulação de dados ──────────────────────────────────────────────────────
+numpy>=1.26            # operações numéricas (P2–P8)
+pandas>=2.2            # DataFrames (P1–P4)
+
+# ── Ontologia e semântica ─────────────────────────────────────────────────────
+rdflib>=7.0            # SPARQL sobre Ontologia PM4JUD OWL/RDF (P1, P3, P6)
+
+# ── Parsing e serialização ────────────────────────────────────────────────────
+lxml>=5.0              # parsing XML/XES (P1–P2)
+pyarrow>=15.0          # leitura/gravação Parquet intermediário (P1)
+
+# ── Pré-processamento de texto ────────────────────────────────────────────────
+scikit-learn>=1.3      # TF-IDF e similaridade cosseno — D'Castro (P2, P4)
+
+# ── API e ambiente ────────────────────────────────────────────────────────────
+requests>=2.31         # API pública DATAJUD/CNJ (P1)
+python-dotenv>=1.0     # variáveis de ambiente (.env) (P1)
+tqdm>=4.66             # barras de progresso (P1)
+
+# ── Visualização ──────────────────────────────────────────────────────────────
+graphviz>=0.20         # exportação DFG e Petri Nets (P5)
+
+# ── Opcional ──────────────────────────────────────────────────────────────────
+# declare4py>=1.1      # verificação LTLf alternativa (P6 usa pm4py nativo)
 ```
 
 ---
@@ -286,6 +320,9 @@ declare4py>=1.1       # verificação LTLf alternativa (opcional)
 
 ```
 pm4jud/
+├── .vscode/
+│   └── launch.json    ← configurações VS Code (P1–P9)
+│   └── extensions.json← configurações VS Code (P1–P9)
 ├── etl/               ← P1: extração DATAJUD/CNJ
 ├── refine/            ← P2 (REFINE1) e P4 (REFINE2)
 ├── complement/        ← P3: injeção [SIM-ASSESSOR]
@@ -306,8 +343,12 @@ pm4jud/
 │   └── PM4JUD.owl                ← Módulo 7: Restrições + Metas CNJ (raiz)
 ├── sparql/
 │   └── PM4JUD_SPARQL_validacao_v2.sparql  ← consultas de validação da ontologia
-├── output/            ← artefatos gerados (não versionar)
+├── output/            ← artefatos gerados
+│   └── leiame.txt     ← orientação do link do google drive para acesso aos arquivos dos experimentos
+├── .env
 ├── .env.example
+├── LICENSE
+├── pyrightconfig.json← configuração dos pacotes das classes python
 ├── requirements.txt
 └── launch.json        ← configurações VS Code (P1–P9)
 ```
