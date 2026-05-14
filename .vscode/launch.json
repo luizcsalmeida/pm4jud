@@ -870,7 +870,7 @@
             "name": "P9 — STAT Análise Completa (T̄ + G + κ + η — Apêndice C)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -885,7 +885,7 @@
             "name": "P9 — STAT Apenas T̄ (tempo médio de julgamento)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
