@@ -1,0 +1,972 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.stj.jus.br/mni/intercomunicacao#"
+     xml:base="http://www.stj.jus.br/mni/intercomunicacao"
+     xmlns:mni="http://www.cnj.jus.br/intercomunicacao-2.2.2#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:stj="http://www.stj.jus.br/mni/intercomunicacao#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.stj.jus.br/mni/intercomunicacao">
+        <owl:imports rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2"/>
+        <rdfs:comment xml:lang="pt">Extensão específica do Superior Tribunal de Justiça (STJ) para o
+Modelo Nacional de Interoperabilidade do CNJ versão 2.2.2.
+
+Este módulo é parte da Framework PM4JUD — Process Mining Framework for Judicial Decision-Making
+Framework de mineração de processos para dados judiciais brasileiros, desenvolvido na PUCPR como adaptação
+do framework PM4SOS (Ferronato, 2022) para o contexto do Superior Tribunal de Justiça (STJ).
+
+COMPONENTES INTEGRADOS:
+• Modelo Nacional de Interoperabilidade (MNI) do CNJ
+• Tabelas Processuais Unificadas (TPU) do CNJ
+  - Classes Processuais (140 classes em hierarquia)
+  - Assuntos Processuais (futuro)
+  - Movimentos Processuais (futuro)
+  - Tipos de Documentos (futuro)
+• Ontologia de Atividades de Gabinetes (futuro)
+• Integração com Event Logs XES
+
+INSTITUIÇÃO: PUCPR - Pontifícia Universidade Católica do Paraná
+PESQUISADOR:
+  • Luiz Claudio Soares de Almeida (Mestrando)
+ORIENTADOR: Prof. Edson Emílio Scalabrin
+PERÍODO: 2024-2026</rdfs:comment>
+        <rdfs:label xml:lang="pt">MNI-STJ - Extensão STJ do Modelo Nacional de Interoperabilidade</rdfs:label>
+        <rdfs:label xml:lang="en">MNI-STJ - STJ Extension of the National Interoperability Model</rdfs:label>
+        <owl:versionInfo>2.2.2</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#TipoVisibilidade -->
+
+    <rdfs:Datatype rdf:about="http://www.stj.jus.br/mni/intercomunicacao#TipoVisibilidade">
+        <rdfs:comment xml:lang="pt">Datatype restrito aos valores &quot;Sim&quot; ou &quot;Não&quot;.
+Usado na propriedade stj:visibilidadeExterna dos movimentos processuais TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Tipo Visibilidade (Sim/Não)</rdfs:label>
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>Sim|Não</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#temClasseProcessual -->
+
+    <owl:ObjectProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#temClasseProcessual">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#ClasseProcessual"/>
+        <rdfs:comment xml:lang="pt">Relaciona o cabeçalho STJ com sua classe processual TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem classe processual</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#temDetalheNaturezaFisico -->
+
+    <owl:ObjectProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#temDetalheNaturezaFisico">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:comment xml:lang="pt">Relaciona o cabeçalho STJ com os detalhes de processo físico.
+Aplicável apenas quando stj:temNaturezaEnvio = stj:NaturezaFisico.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem detalhe de processo físico</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#temNaturezaEnvio -->
+
+    <owl:ObjectProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#temNaturezaEnvio">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio"/>
+        <rdfs:comment xml:lang="pt">Indica a forma de envio do processo ao STJ:
+ELETRONICO | DIGITALIZADO | FISICO.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem natureza de envio</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#temRepresentativoControversia -->
+
+    <owl:ObjectProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#temRepresentativoControversia">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#RepresentativoControversia"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo é representativo de controvérsia (recurso repetitivo).</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem representativo de controvérsia</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#temUnidadeFederacao -->
+
+    <owl:ObjectProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#temUnidadeFederacao"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#apenso -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#apenso">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DocumentoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o documento é um apenso ao processo principal.</rdfs:comment>
+        <rdfs:label xml:lang="pt">apenso</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#artigoLegalAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#artigoLegalAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Artigo específico da lei que trata do assunto.</rdfs:comment>
+        <rdfs:label xml:lang="pt">artigo legal do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#artigoLegalClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#artigoLegalClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Artigo(s) específico(s) da lei que fundamenta a classe processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">artigo legal da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#artigoLegalMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#artigoLegalMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Artigo específico da lei que trata do movimento.</rdfs:comment>
+        <rdfs:label xml:lang="pt">artigo legal do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoAssuntoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoAssuntoTPU">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código único do assunto processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do assunto TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoClassePrimeiraInstancia -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoClassePrimeiraInstancia">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#ClasseProcessual"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código da classe processual na primeira instância conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código da classe da primeira instância</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoClasseTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoClasseTPU">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código único da classe processual conforme Tabela Processual Unificada do CNJ.
+Domain omitido intencionalmente para permitir reuso em PM4JUD_Classes.owl.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código da classe TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoClasseTribunalOrigem -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoClasseTribunalOrigem">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#ClasseProcessual"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código da classe processual no tribunal de origem conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código da classe do tribunal de origem</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoDocumentoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoDocumentoTPU">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código único do tipo de documento processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do documento TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#codigoMovimentoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#codigoMovimentoTPU">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código único do movimento processual conforme TPU/CNJ (Resolução 65/2008).</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do movimento TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#complementoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#complementoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Tipo e descrição complementar do movimento processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">complemento do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#criminal -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#criminal">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo tramita em matéria criminal.</rdfs:comment>
+        <rdfs:label xml:lang="pt">criminal</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#custas -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#custas">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica o status de recolhimento das custas processuais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">custas</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data da última alteração do assunto na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de alteração do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data da última alteração da classe processual na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de alteração da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoDocumento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data da última alteração do tipo de documento na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de alteração do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataAlteracaoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data da última alteração do movimento na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de alteração do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o assunto foi inativado na TPU (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de inativação do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que a classe processual foi inativada na TPU (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de inativação da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoDocumento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o tipo de documento foi inativado na TPU (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de inativação do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataInativacaoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o movimento foi inativado na TPU (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de inativação do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o assunto foi publicado na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de publicação do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data de publicação oficial da classe na Tabela Processual Unificada.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de publicação da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoDocumento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o tipo de documento foi publicado na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de publicação do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataPublicacaoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o movimento foi publicado na TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de publicação do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o assunto foi reativado após inativação (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de reativação do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que a classe processual foi reativada após inativação (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de reativação da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoDocumento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o tipo de documento foi reativado após inativação (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de reativação do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dataReativacaoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o movimento foi reativado após inativação (se aplicável).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de reativação do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Lei ou norma que fundamenta o assunto processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">dispositivo legal do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Lei, código ou norma jurídica que fundamenta a classe processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">dispositivo legal da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#dispositivoLegalMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Lei ou norma que fundamenta o movimento processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">dispositivo legal do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#glossarioAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#glossarioAssunto">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Descrição detalhada e glossário do assunto processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">glossário do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#glossarioClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#glossarioClasse">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Descrição detalhada, orientações de uso e observações sobre a classe processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">glossário da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#glossarioDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#glossarioDocumento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Descrição detalhada e glossário do tipo de documento processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">glossário do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#glossarioMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#glossarioMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Descrição detalhada e glossário do movimento processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">glossário do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#isRepresentativoControversia -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#isRepresentativoControversia">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#RepresentativoControversia"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo foi destacado como representativo de controvérsia.</rdfs:comment>
+        <rdfs:label xml:lang="pt">é representativo de controvérsia</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeAssuntoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeAssuntoTPU">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome descritivo do assunto/matéria processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do assunto TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeClasseTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeClasseTPU">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome descritivo completo da classe processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome da classe TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeDocumentoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeDocumentoTPU">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome descritivo do tipo de documento processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do documento TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeLocalidade -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeLocalidade">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome da capital ou cidade de origem do processo.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome da localidade</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeMovimentoTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeMovimentoTPU">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome descritivo do movimento processual conforme TPU/CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do movimento TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#nomeRelatorStj -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#nomeRelatorStj">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome do ministro relator do processo no STJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do relator STJ</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#numeroOrigem -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#numeroOrigem">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Número do processo no tribunal de origem (até 50 caracteres).</rdfs:comment>
+        <rdfs:label xml:lang="pt">número de origem</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#numeroPaginaAssistenciaJudiciaria -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#numeroPaginaAssistenciaJudiciaria">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#ParteStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Página contendo deferimento de justiça gratuita (Lei 1.060/1950).</rdfs:comment>
+        <rdfs:label xml:lang="pt">número da página de assistência judiciária</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#numeroVolume -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#numeroVolume">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DocumentoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Volume do processo ao qual pertence o documento (padrão: 1).</rdfs:comment>
+        <rdfs:label xml:lang="pt">número do volume</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#paginaCustas -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#paginaCustas">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Número da página contendo comprovante de recolhimento de custas.</rdfs:comment>
+        <rdfs:label xml:lang="pt">página de custas</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#paginaPedidoLiminarStj -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#paginaPedidoLiminarStj">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Número da página contendo o pedido de liminar (processo físico).</rdfs:comment>
+        <rdfs:label xml:lang="pt">página do pedido de liminar STJ</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#paginaPrioridadeEstatutoIdoso -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#paginaPrioridadeEstatutoIdoso">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Número da página contendo documentação de prioridade por idoso (Lei 10.741/2003).</rdfs:comment>
+        <rdfs:label xml:lang="pt">página de prioridade por estatuto do idoso</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#paginaRepresentativoControversia -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#paginaRepresentativoControversia">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Número da página contendo indicação de representativo de controvérsia.</rdfs:comment>
+        <rdfs:label xml:lang="pt">página de representativo de controvérsia</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#pedidoLiminarSTJ -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#pedidoLiminarSTJ">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo possui pedido de liminar a ser julgado no STJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">pedido de liminar STJ</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#quantidadeApensos -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#quantidadeApensos">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Quantidade de documentos apensos ao processo (padrão: 0).</rdfs:comment>
+        <rdfs:label xml:lang="pt">quantidade de apensos</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#quantidadeProcessosSobrestados -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#quantidadeProcessosSobrestados">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#RepresentativoControversia"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Quantidade de processos sobrestados no tribunal de origem
+aguardando o julgamento do tema repetitivo.</rdfs:comment>
+        <rdfs:label xml:lang="pt">quantidade de processos sobrestados</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#quantidadeVolumes -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#quantidadeVolumes">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Quantidade de volumes do processo físico (padrão: 1).</rdfs:comment>
+        <rdfs:label xml:lang="pt">quantidade de volumes</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#repetitivo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#repetitivo">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo é recurso repetitivo (art. 1.036 CPC/2015).</rdfs:comment>
+        <rdfs:label xml:lang="pt">repetitivo</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#resumoIndicativo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#resumoIndicativo">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Resumo do processo para fins de identificação e triagem.</rdfs:comment>
+        <rdfs:label xml:lang="pt">resumo indicativo</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#segredoJustica -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#segredoJustica">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">Indica se o processo corre em segredo de justiça (art. 189 CPC/2015).</rdfs:comment>
+        <rdfs:label xml:lang="pt">segredo de justiça</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#siglaClasseTPU -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#siglaClasseTPU">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Sigla oficial da classe processual (ex.: HC, REsp, AgRg).</rdfs:comment>
+        <rdfs:label xml:lang="pt">sigla da classe TPU</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#tipoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#tipoMovimento">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Categoria ou tipo do movimento processual conforme TPU.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tipo do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#ultimaFolha -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#ultimaFolha">
+        <rdfs:domain rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Número da última página dos autos físicos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">última folha</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#visibilidadeExterna -->
+
+    <owl:DatatypeProperty rdf:about="http://www.stj.jus.br/mni/intercomunicacao#visibilidadeExterna">
+        <rdfs:range rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#TipoVisibilidade"/>
+        <rdfs:comment xml:lang="pt">Indica se o movimento é visível externamente ao sistema.
+Valores válidos: &quot;Sim&quot; ou &quot;Não&quot; (stj:TipoVisibilidade).</rdfs:comment>
+        <rdfs:label xml:lang="pt">visibilidade externa</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#ConteudoDocumento -->
+
+    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#ConteudoDocumento">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#CabecalhoProcessoStj">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#temNaturezaEnvio"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#temUnidadeFederacao"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#numeroOrigem"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Extensão do cabeçalho de processo com informações específicas
+para tramitação no Superior Tribunal de Justiça:
+natureza de envio, número de origem, UF de procedência,
+representativo de controvérsia e demais atributos institucionais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Cabeçalho de Processo STJ</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#ClasseProcessual -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#ClasseProcessual">
+        <rdfs:comment xml:lang="pt">Classe processual conforme Tabela Processual Unificada (TPU) do CNJ,
+Resolução CNJ 46/2007. Âncora para a hierarquia de 140 classes do STJ
+definida em PM4JUD_Classes.owl.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Classe Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#ComunicacaoProcessualStj -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#ComunicacaoProcessualStj">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ComunicacaoProcessual"/>
+        <rdfs:comment xml:lang="pt">Comunicação processual com características específicas do STJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Comunicação Processual STJ</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#DetalheProcessoFisico">
+        <rdfs:comment xml:lang="pt">Informações específicas para processos físicos encaminhados ao STJ:
+número de páginas, volumes, apensos e localização de documentos relevantes.
+Associado ao cabeçalho quando stj:temNaturezaEnvio = stj:NaturezaFisico.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Detalhe de Processo Físico</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#DocumentoStj -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#DocumentoStj">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:comment xml:lang="pt">Extensão de mni:Documento com informações específicas do STJ:
+número de volume e indicação de apenso.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Documento STJ</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaDigitalizado"/>
+                    <rdf:Description rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEletronico"/>
+                    <rdf:Description rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaFisico"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Forma de envio do processo ao STJ:
+ELETRONICO (processo nato digital) | DIGITALIZADO (físico digitalizado) | FISICO (autos em papel).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Natureza de Envio</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#ParteStj -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#ParteStj">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:comment xml:lang="pt">Extensão de mni:Parte com informações específicas do STJ,
+como página de deferimento de assistência judiciária gratuita (Lei 1.060/50).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Parte STJ</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#RepresentativoControversia -->
+
+    <owl:Class rdf:about="http://www.stj.jus.br/mni/intercomunicacao#RepresentativoControversia">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#isRepresentativoControversia"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Processo destacado pela corte de origem como paradigma em caso de
+multiplicidade de recursos com fundamento em idêntica questão de direito
+(art. 1.036 CPC/2015 — recurso repetitivo).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Representativo de Controvérsia</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#NaturezaDigitalizado -->
+
+    <owl:NamedIndividual rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaDigitalizado">
+        <rdf:type rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio"/>
+        <rdfs:label xml:lang="pt">DIGITALIZADO — Processo Físico Digitalizado</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#NaturezaEletronico -->
+
+    <owl:NamedIndividual rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEletronico">
+        <rdf:type rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio"/>
+        <rdfs:label xml:lang="pt">ELETRONICO — Processo Eletrônico Nato</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.stj.jus.br/mni/intercomunicacao#NaturezaFisico -->
+
+    <owl:NamedIndividual rdf:about="http://www.stj.jus.br/mni/intercomunicacao#NaturezaFisico">
+        <rdf:type rdf:resource="http://www.stj.jus.br/mni/intercomunicacao#NaturezaEnvio"/>
+        <rdfs:label xml:lang="pt">FISICO — Processo Físico (autos em papel)</rdfs:label>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

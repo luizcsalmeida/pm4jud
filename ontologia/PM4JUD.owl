@@ -1,0 +1,1366 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.pucpr.br/pm4jud#"
+     xml:base="http://www.pucpr.br/pm4jud"
+     xmlns:ass="http://www.pucpr.br/pm4jud/assuntos#"
+     xmlns:cls="http://www.pucpr.br/pm4jud/classes#"
+     xmlns:doc="http://www.pucpr.br/pm4jud/documentos#"
+     xmlns:mni="http://www.cnj.jus.br/intercomunicacao-2.2.2#"
+     xmlns:mov="http://www.pucpr.br/pm4jud/movimentos#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:stj="http://www.stj.jus.br/mni/intercomunicacao#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:pm4jud="http://www.pucpr.br/pm4jud#">
+    <owl:Ontology rdf:about="http://www.pucpr.br/pm4jud">
+        <owl:imports rdf:resource="http://www.pucpr.br/pm4jud/assuntos"/>
+        <owl:imports rdf:resource="http://www.pucpr.br/pm4jud/classes"/>
+        <owl:imports rdf:resource="http://www.pucpr.br/pm4jud/documentos"/>
+        <owl:imports rdf:resource="http://www.pucpr.br/pm4jud/movimentos"/>
+        <rdfs:comment xml:lang="pt">Adaptação do PM4SOS (Ferronato, 2022) para o STJ.
+PPGIa/PUCPR — Luiz Claudio Soares de Almeida.
+Orientador: Prof. Dr. Edson Emílio Scalabrin. TPU/CNJ: 09/04/2026.</rdfs:comment>
+        <rdfs:label xml:lang="pt">PM4JUD — Framework de Mineração de Processos Judiciais</rdfs:label>
+        <rdfs:label xml:lang="en">PM4JUD — Process Mining Framework for Judicial Decision-Making</rdfs:label>
+        <owl:versionInfo>2.0.0-2026-05</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#aplicaSeAAssuntoProcessual -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#aplicaSeAAssuntoProcessual">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:comment xml:lang="pt">Restringe a regra a um Assunto
+Processual TPU específico. Usado em C9 (crimes contra a
+administração pública). Ligado a indivíduos PM4JUD_Assuntos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">aplica-se ao Assunto Processual</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#aplicaSeAClasseProcessual -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#aplicaSeAClasseProcessual">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:comment xml:lang="pt">Restringe a regra a uma Classe
+Processual TPU específica. Ausência = aplica-se a todas.
+Ligado a indivíduos do módulo PM4JUD_Classes.</rdfs:comment>
+        <rdfs:label xml:lang="pt">aplica-se à Classe Processual</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#impõePrioridade -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#impõePrioridade">
+        <rdfs:subPropertyOf rdf:resource="http://www.pucpr.br/pm4jud#sujeitoA"/>
+        <rdfs:label xml:lang="pt">impõe prioridade sobre</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#incideSobreClasseTPU -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#incideSobreClasseTPU">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <rdfs:label xml:lang="pt">incide sobre classe TPU</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#movimentoTipicoHC -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#movimentoTipicoHC">
+        <rdfs:label xml:lang="pt">movimento típico de Habeas Corpus</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#pertenceAEspecialidade -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#pertenceAEspecialidade">
+        <rdfs:range rdf:resource="http://www.pucpr.br/pm4jud#Especialidade"/>
+        <rdfs:label xml:lang="pt">pertence à especialidade</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#sujeitoA -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#sujeitoA">
+        <rdfs:range rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:label xml:lang="pt">sujeito a</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temAssunto -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temAssunto">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:label xml:lang="pt">tem assunto</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temAtividadeAntecedente -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temAtividadeAntecedente">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:comment xml:lang="pt">Movimento Processual A no padrão
+Declare &quot;A → B&quot;. Ligado a indivíduos do módulo PM4JUD_Movimentos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem Movimento Processual antecedente</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temAtividadeConsequente -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temAtividadeConsequente">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:comment xml:lang="pt">Movimento Processual B no padrão
+Declare &quot;A → B&quot;. Ligado a indivíduos do módulo PM4JUD_Movimentos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem Movimento Processual consequente</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temClasseProcessual -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temClasseProcessual">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:label xml:lang="pt">tem classe processual</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temDocumento -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temDocumento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:label xml:lang="pt">tem documento</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temMovimento -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temMovimento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:label xml:lang="pt">tem movimento</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temPapelResultadoHC -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#temPapelResultadoHC">
+        <rdfs:label xml:lang="pt">tem papel de resultado em Habeas Corpus</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#vinculadoAOrgao -->
+
+    <owl:ObjectProperty rdf:about="http://www.pucpr.br/pm4jud#vinculadoAOrgao">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#MagistradoAtuante"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador"/>
+        <rdfs:label xml:lang="pt">vinculado ao órgão julgador</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#codigoRegra -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#codigoRegra">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Identificador único: C1–C9.
+Usado no cabeçalho dos relatórios gerados pelo P8 (STAT).</rdfs:comment>
+        <rdfs:label xml:lang="pt">código da regra</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#indicadorAlvo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#indicadorAlvo">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Indicador do protocolo experimental
+afetado. Valores: T_bar | G | kappa | eta_meta1 | eta_meta2 |
+eta_meta4a.</rdfs:comment>
+        <rdfs:label xml:lang="pt">indicador alvo</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#nivelVerificacao -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#nivelVerificacao">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">1 = verificável com dados públicos
+DATAJUD. 2 = requer eventos internos: dados reais do SAGWeb
+(Fase 2) ou [SIM-ASSESSOR] do Complement (Fase 1).</rdfs:comment>
+        <rdfs:label xml:lang="pt">nível de verificação</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#padraoLTLf -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#padraoLTLf">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Padrão Declare instanciado via pm4py
+pelo P5. Valores: response | precedence | chain_response |
+existence | absence | cond_resource | aggregate_count |
+response_with_deadline.</rdfs:comment>
+        <rdfs:label xml:lang="pt">padrão LTLf Declare</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#prazoMaxDiasUteis -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#prazoMaxDiasUteis">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Prazo para regras temporais.
+Valor -1 indica ausência de prazo definido.</rdfs:comment>
+        <rdfs:label xml:lang="pt">prazo máximo em dias úteis</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#regraAtiva -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#regraAtiva">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment xml:lang="pt">true = verificada pelo P5 (padrão).
+false = suspensa sem remover axiomas. As queries SPARQL
+filtram por regraAtiva = true.</rdfs:comment>
+        <rdfs:label xml:lang="pt">regra ativa</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temAtividadeSAGWebAntecedente -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#temAtividadeSAGWebAntecedente">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome canônico da Atividade Judicial SAGWeb antecedente
+na regra Declare. Usado exclusivamente em regras de Nível 2, que requerem eventos
+internos do SAGWeb (reais na Fase 2 ou simulados [SIM-ASSESSOR] na Fase 1).
+O valor deve corresponder exatamente ao campo concept:name gerado pelo PM4JUD-COMPLEMENT (P3).</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem Atividade Judicial SAGWeb antecedente</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temAtividadeSAGWebConsequente -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#temAtividadeSAGWebConsequente">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome canônico da Atividade Judicial SAGWeb consequente
+na regra Declare. Mesmo critério de correspondência que temAtividadeSAGWebAntecedente.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem Atividade Judicial SAGWeb consequente</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temFundamentoNoArtigo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#temFundamentoNoArtigo">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="pt">tem fundamento no artigo</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#temIndicador -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#temIndicador">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="pt">tem indicador</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#tipoViolacao -->
+
+    <owl:DatatypeProperty rdf:about="http://www.pucpr.br/pm4jud#tipoViolacao">
+        <rdfs:domain rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">hard = restrição rígida: solução
+descartada no P7 quando violada; SA aciona reparo.
+soft = penaliza função fitness sem descartar.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tipo de violação</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#AutoridadeCoatora -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#AutoridadeCoatora">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:comment xml:lang="pt">Autoridade apontada como responsável pela
+coação ilegal ou ameaça à liberdade de locomoção do paciente.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Autoridade Coatora</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Especialidade -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#Especialidade">
+        <rdfs:comment xml:lang="pt">Especialidade da matéria: Criminal, Cível,
+Tributário ou Previdenciário. Inferida via pertenceAEspecialidade.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Especialidade Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Impetrante -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#Impetrante">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:comment xml:lang="pt">Quem impetrou o writ de Habeas Corpus.
+Pode ser o próprio paciente, advogado ou qualquer pessoa (CPP art. 654).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Impetrante</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#MagistradoAtuante -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#MagistradoAtuante">
+        <rdfs:comment xml:lang="pt">Magistrado com atuação formal no processo
+judicial, conforme o campo magistradoAtuante do CabecalhoProcesso no MNI 2.2.2.
+Superclasse dos papéis específicos de magistrado no PM4JUD, como o
+pm4jud:RelatorHC.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Magistrado Atuante</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#MetaNacionalCNJ -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#MetaNacionalCNJ">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:comment xml:lang="pt">Variável dependente (d) do PM4JUD:
+aderência às Metas CNJ 1, 2 e 4 (%). Subclasse de RegraJudicial;
+verificada via constraints C7, C8 e C9 geradas pelo P5.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Meta Nacional CNJ</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Paciente -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#Paciente">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:comment xml:lang="pt">Beneficiário da ordem de Habeas Corpus —
+pessoa em cujo favor o writ é impetrado. Nos termos do art. 5º, inciso LXVIII,
+da Constituição Federal.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Paciente</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#ProcessoCriminal -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#ProcessoCriminal">
+        <rdfs:comment xml:lang="pt">Superclasse semântica PM4JUD para processos
+de natureza criminal. Não corresponde a código TPU — é construção ontológica
+do framework para agrupamento semântico.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Processo Criminal</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraDeEspecializacao -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraDeEspecializacao">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:comment xml:lang="pt">Restrição de atribuição de recurso
+especializado. Verifica que o assessor (org:resource) possui
+Assunto Processual compatível com a matéria do processo
+(art. 110 RISTJ). Nível de verificação 2 — requer dados SAGWeb
+ou eventos [SIM-ASSESSOR] do Complement (P3).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra de Especialização</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraDeExistencia -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraDeExistencia">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:comment xml:lang="pt">Restrição de obrigatoriedade de
+Movimentos Processuais no traço. Padrões Declare: existence,
+absence, exactly1. Ex.: todo traço HC deve conter publicação
+no DJe — TPU 92 ou 1061 (C6).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra de Existência</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraDeOrdem -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraDeOrdem">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:comment xml:lang="pt">Restrição de sequência entre
+Movimentos Processuais. Padrões Declare: precedence, response,
+chain_response. Ex.: manifestação do MP antes da conclusão para
+decisão (C2, art. 111 RISTJ).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra de Ordem</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraDePrioridade -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraDePrioridade">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:comment xml:lang="pt">Restrição que impõe julgamento
+prioritário a determinadas Classes Processuais. Ex.: HC e RHC
+independem de pauta (art. 91 e 202 RISTJ).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra de Prioridade</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraJudicial -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraJudicial">
+        <rdfs:comment xml:lang="pt">Superclasse de todas as restrições
+formalizadas no PM4JUD. Agrupa as regras regimentais do RISTJ
+(RegraRegimental) e as Metas Nacionais do CNJ (MetaNacionalCNJ).
+Os indivíduos desta classe são consultados via SPARQL em runtime
+pelos programas P3, P5, P6 e P7. Atualizar os axiomas quando o
+RISTJ ou as Metas CNJ forem alterados — o pipeline adapta-se sem
+reescrita de código, habilitando o OE(e).</rdfs:comment>
+        <rdfs:label xml:lang="en">Judicial Rule</rdfs:label>
+        <rdfs:label xml:lang="pt">Regra Judicial</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraRegimental -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraRegimental">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraJudicial"/>
+        <rdfs:comment xml:lang="pt">Norma do RISTJ que condiciona a
+tramitação processual. Formaliza constraints Declare no modelo DES
+do PM4JUD. Subclasses: RegraDeOrdem, RegraTemporal,
+RegraDeExistencia, RegraDeEspecializacao, RegraDePrioridade.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra Regimental</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraTemporal -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RegraTemporal">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <rdfs:comment xml:lang="pt">Restrição de prazo máximo entre
+dois eventos do traço. Padrão Declare: response com tempo_max.
+Ex.: HC deve ser julgado em até 30 dias úteis após a conclusão
+para decisão (C1, art. 91 RISTJ).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Regra Temporal</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RelatorHC -->
+
+    <owl:Class rdf:about="http://www.pucpr.br/pm4jud#RelatorHC">
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#MagistradoAtuante"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#vinculadoAOrgao"/>
+                <owl:someValuesFrom rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Ministro relator designado para o processo
+de Habeas Corpus. Vinculado ao mni:OrgaoJulgador do Módulo 1 (câmara ou turma
+do STJ responsável pelo julgamento).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Relator de Habeas Corpus</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#FamiliaHabeasCorpus -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#FamiliaHabeasCorpus">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud#ProcessoCriminal"/>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                                <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1013"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                                <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1064"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                                <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_15224"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                                <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                                <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1722"/>
+                            </owl:Restriction>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud#ProcessoCriminal"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#HabeasCorpus -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#HabeasCorpus">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud#ProcessoCriminal"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.pucpr.br/pm4jud#temClasseProcessual"/>
+                        <owl:hasValue rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.pucpr.br/pm4jud/classes#FamiliaHabeasCorpus"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Civel -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Civel">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#Especialidade"/>
+        <rdfs:label xml:lang="pt">Cível</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Criminal -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Criminal">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#Especialidade"/>
+        <rdfs:label xml:lang="pt">Criminal</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Meta1_CNJ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Meta1_CNJ">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <incideSobreClasseTPU rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+        <temIndicador>Julgar quantidade maior de processos do que os distribuídos no ano corrente</temIndicador>
+        <rdfs:label xml:lang="pt">Meta Nacional CNJ 1 — 2025</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Meta2_CNJ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Meta2_CNJ">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <incideSobreClasseTPU rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+        <temIndicador>Identificar e julgar processos mais antigos do acervo</temIndicador>
+        <rdfs:label xml:lang="pt">Meta Nacional CNJ 2 — 2025</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Meta4_CNJ -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Meta4_CNJ">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <incideSobreClasseTPU rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+        <temIndicador>Identificar e julgar processos de improbidade e ações penais originárias</temIndicador>
+        <rdfs:label xml:lang="pt">Meta Nacional CNJ 4 — 2025</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Previdenciario -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Previdenciario">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#Especialidade"/>
+        <rdfs:label xml:lang="pt">Previdenciário</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC1">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_11383"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_447"/>
+        <codigoRegra>C1</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 91, I do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 91, caput, RISTJ</rdfs:comment>
+        <rdfs:label xml:lang="pt">C1 — Prioridade HC: julgamento em até 30 dias úteis após conclusão</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC10 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC10">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_51"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_11383"/>
+        <codigoRegra>C10</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response_with_deadline</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 110, I do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 110, I do RISTJ. Nível 1: verificável diretamente
+no DATAJUD. TPU 51 (Conclusos para decisão) deve ser seguido de TPU 11383 (Ato ordinatório)
+em até 10 dias úteis. Cobre tanto a via monocrática quanto a colegiada.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C10 — Ato ordinatório em até 10 dias após conclusos (art. 110, I)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC11 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC11">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_51"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_14093"/>
+        <codigoRegra>C11</codigoRegra>
+        <indicadorAlvo>T_bar</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response_with_deadline</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 110, III do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 110, III do RISTJ. Nível 1: verificável diretamente
+no DATAJUD. TPU 51 (Conclusos) deve ser seguido de TPU 14093 (Voto do relator)
+em até 30 dias úteis. Aplica-se exclusivamente à via colegiada.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C11 — Voto do relator em até 30 dias após conclusos (art. 110, III)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC12 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC12">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeOrdem"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_3002"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_239"/>
+        <codigoRegra>C12</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 95 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 95 do RISTJ. Nível 1: verificável diretamente
+no DATAJUD. TPU 3002 (Inclusão em mesa para julgamento) deve ser seguido de TPU 239
+(resultado do julgamento colegiado). Garante que o processo incluído em sessão é efetivamente
+julgado na sessão designada.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C12 — Julgamento obrigatório após inclusão em mesa (art. 95)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC13 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC13">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_3001"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_11383"/>
+        <codigoRegra>C13</codigoRegra>
+        <indicadorAlvo>T_bar</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response_with_deadline</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 179 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 179 do RISTJ. Nível 1: verificável diretamente
+no DATAJUD. TPU 3001 (Proclamação Final de Julgamento) deve ser seguido de TPU 11383
+(Ato ordinatório — acórdão encaminhado à publicação) em até 30 dias. O 11383 aqui
+sinaliza que a EMENTA/ACÓRDÃO já foi elaborada e enviada à publicação pelo gabinete.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C13 — EMENTA/ACÓRDÃO publicado em até 30 dias após proclamação (art. 179)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC14 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC14">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeExistencia"/>
+        <codigoRegra>C14</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>precedence</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temAtividadeSAGWebAntecedente>Deslocamento: Gabinete para Turma</temAtividadeSAGWebAntecedente>
+        <temAtividadeSAGWebConsequente>10: Criação de documento RELATÓRIO E VOTO</temAtividadeSAGWebConsequente>
+        <temFundamentoNoArtigo>arts. 94 e 95 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">arts. 94 e 95 do RISTJ. Nível 2: requer log SAGWeb
+(real na Fase 2 ou [SIM-ASSESSOR] na Fase 1). O deslocamento do processo ao órgão
+julgador (Gabinete → Turma) pressupõe que o RELATÓRIO E VOTO já foi elaborado
+pelo relator. Padrão: Precedence(criação RelVoto, deslocamento).</rdfs:comment>
+        <rdfs:label xml:lang="pt">C14 — RELATÓRIO E VOTO precede deslocamento à Turma (arts. 94/95)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC15 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC15">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeExistencia"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_3001"/>
+        <codigoRegra>C15</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temAtividadeSAGWebConsequente>10: Criação de documento EMENTA ACÓRDÃO</temAtividadeSAGWebConsequente>
+        <temFundamentoNoArtigo>arts. 123, 178 e 180 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">arts. 123, 178 e 180 do RISTJ. Nível 2: requer log SAGWeb.
+Após TPU 3001 (Proclamação Final de Julgamento), o gabinete do relator DEVE elaborar
+e registrar no SAGWeb a EMENTA/ACÓRDÃO. Combina antecedente TPU (Nível 1) com
+consequente SAGWeb (Nível 2) no log complementado pelo P3.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C15 — EMENTA/ACÓRDÃO obrigatório após proclamação (arts. 123/178/180)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC16 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC16">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeExistencia"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_51"/>
+        <codigoRegra>C16</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temAtividadeSAGWebConsequente>10: Criação de documento DESPACHO DECISÃO</temAtividadeSAGWebConsequente>
+        <temFundamentoNoArtigo>arts. 34, XVIII-XX e 38 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">arts. 34 (XVIII, XIX, XX), 38 (§1º, §2º) e 203, II do RISTJ.
+Nível 2: requer log SAGWeb. Após TPU 51 (Conclusos para decisão), em traços sem TPU 3002
+(não foram à sessão — via monocrática), o gabinete DEVE ter registrado a elaboração do
+DESPACHO/DECISÃO no SAGWeb (atividade &quot;10: Criação de documento DESPACHO DECISÃO&quot;).
+A ausência deste evento indica divergência entre o fluxo TPU e o fluxo interno do gabinete.</rdfs:comment>
+        <rdfs:label xml:lang="pt">C16 — DESPACHO/DECISÃO obrigatório em traços monocráticos (arts. 34/38)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC2">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeOrdem"/>
+        <codigoRegra>C2</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>precedence</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 111 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 111, caput, RISTJ</rdfs:comment>
+        <rdfs:label xml:lang="pt">C2 — MP manifesta em 2 dias antes da conclusão para decisão</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC3">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeEspecializacao"/>
+        <codigoRegra>C3</codigoRegra>
+        <indicadorAlvo>G</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>cond_resource</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 110 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 110, RISTJ</rdfs:comment>
+        <rdfs:label xml:lang="pt">C3 — Assessor especializado na matéria do processo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC4 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC4">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeOrdem"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_14093"/>
+        <codigoRegra>C4</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>chain_response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 110 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 110, RISTJ</rdfs:comment>
+        <rdfs:label xml:lang="pt">C4 — Preparação para assinatura precede o voto do relator</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC5 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC5">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeOrdem"/>
+        <codigoRegra>C5</codigoRegra>
+        <indicadorAlvo>kappa</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</nivelVerificacao>
+        <padraoLTLf>precedence</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>art. 110 do RISTJ</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">art. 110, RISTJ</rdfs:comment>
+        <rdfs:label xml:lang="pt">C5 — Sem regressão de escaninho após Conclusão Para Decisão</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC6 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC6">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDeExistencia"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_12458"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_12475"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_443"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_447"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_451"/>
+        <temAtividadeConsequente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_92"/>
+        <codigoRegra>C6</codigoRegra>
+        <indicadorAlvo>eta_meta1</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>PM4JUD v2.0 — resultado HC</temFundamentoNoArtigo>
+        <tipoViolacao>hard</tipoViolacao>
+        <rdfs:comment xml:lang="pt">TPU 92/1061 — integridade do traço</rdfs:comment>
+        <rdfs:label xml:lang="pt">C6 — Todo traço com resultado HC deve ter publicação no DJe</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC7 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC7">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_26"/>
+        <codigoRegra>C7</codigoRegra>
+        <indicadorAlvo>eta_meta1</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>aggregate_count</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>Meta Nacional CNJ 1 — 2025</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">Meta 1 CNJ 2025</rdfs:comment>
+        <rdfs:label xml:lang="pt">C7 — Meta 1 CNJ: julgar quantidade igual ou superior à distribuída</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC8 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC8">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_26"/>
+        <codigoRegra>C8</codigoRegra>
+        <indicadorAlvo>eta_meta2</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response_with_deadline</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>Meta Nacional CNJ 2 — 2025</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">Meta 2 CNJ 2025</rdfs:comment>
+        <rdfs:label xml:lang="pt">C8 — Meta 2 CNJ: julgar processos distribuídos até 31/12/2020</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#RegraC9 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#RegraC9">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#MetaNacionalCNJ"/>
+        <aplicaSeAAssuntoProcessual rdf:resource="http://www.pucpr.br/pm4jud/assuntos#GrupoCrimesAdministracaoPublica"/>
+        <temAtividadeAntecedente rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_26"/>
+        <codigoRegra>C9</codigoRegra>
+        <indicadorAlvo>eta_meta4a</indicadorAlvo>
+        <nivelVerificacao rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</nivelVerificacao>
+        <padraoLTLf>response_with_deadline</padraoLTLf>
+        <prazoMaxDiasUteis rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</prazoMaxDiasUteis>
+        <regraAtiva rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</regraAtiva>
+        <temFundamentoNoArtigo>Meta Nacional CNJ 4a — 2025</temFundamentoNoArtigo>
+        <tipoViolacao>soft</tipoViolacao>
+        <rdfs:comment xml:lang="pt">Meta 4a CNJ 2025</rdfs:comment>
+        <rdfs:label xml:lang="pt">C9 — Meta 4a CNJ: julgar crimes contra administração pública</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temFundamentoNoArtigo>art. 110, I do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Prazo de 10 dias para atos administrativos e
+decisões interlocutórias após conclusão dos autos (TPU 51 → TPU 11383).
+Verificável no Nível 1 via DATAJUD. Formalizado como C10 no P5 (LTLf).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Prazo de 10 dias — atos ordinatórios — art. 110, I do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temFundamentoNoArtigo>art. 110, III do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Prazo de 30 dias para visto do relator após conclusão
+dos autos (TPU 51 → TPU 14093). No contexto colegiado, corresponde ao intervalo entre
+conclusos e a elaboração do RELATÓRIO E VOTO. Verificável no Nível 1 (TPU 51→14093)
+e no Nível 2 (SAGWeb: Conclusão para decisão → 10: Criação RELATÓRIO E VOTO).
+Formalizado como C11 no P5 (LTLf).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Prazo de 30 dias — visto do relator — art. 110, III do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art123 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art123">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 123 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">O acórdão conterá ementa da questão de direito decidida.
+Formaliza a obrigação de existência do documento EMENTA/ACÓRDÃO após toda sessão de
+julgamento. Verificável no Nível 2 pela presença da atividade SAGWeb
+&quot;10: Criação de documento EMENTA ACÓRDÃO&quot; após TPU 3001 no log complementado.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Conteúdo obrigatório do acórdão — art. 123 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDePrioridade"/>
+        <temFundamentoNoArtigo>art. 177, II do RISTJ</temFundamentoNoArtigo>
+        <rdfs:label xml:lang="pt">Prioridade de pauta — art. 177, II do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art179 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art179">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraTemporal"/>
+        <temFundamentoNoArtigo>art. 179 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Prazo de 30 dias para elaboração e entrega do acórdão
+após a sessão de julgamento (TPU 3001 → TPU 11383 que antecede a publicação do acórdão).
+Verificável no Nível 1 via DATAJUD (TPU 3001 → TPU 11383).
+Formalizado como C13 no P5 (LTLf).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Prazo de 30 dias para elaboração do acórdão — art. 179 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art180 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art180">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 180 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">O acórdão deve ser assinado por todos os Ministros
+que participaram do julgamento. Verificável no Nível 2 pela presença das atividades SAGWeb
+de assinatura eletrônica do ministro (G5b) após elaboração da EMENTA/ACÓRDÃO no log
+complementado pelo P3.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Assinatura do acórdão pelos participantes — art. 180 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art202 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art202">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 202 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Instruído o processo e ouvido o MP em 2 dias,
+coloca em mesa na primeira sessão. Formaliza prazo máximo no modelo DES.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Colocação em mesa — art. 202 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art203_II -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art203_II">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 203, II do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Tribunal pode expedir HC de ofício (mov. TPU 12475).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Concessão de ofício — art. 203, II do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XIX -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XIX">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 34, XIX do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Relator pode julgar recursos quando a orientação
+do julgamento estiver pacificada em súmula ou jurisprudência dominante do STJ.
+Complementa o art. 34, XX para a via monocrática.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Julgamento monocrático por jurisprudência — art. 34, XIX do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 34, XVIII do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Relator pode negar seguimento a pedido ou recurso
+manifestamente inadmissível, improcedente, prejudicado ou em confronto com a
+jurisprudência dominante do Tribunal. Fundamenta a via monocrática via DESPACHO/DECISÃO.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Negar seguimento — art. 34, XVIII do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XX -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XX">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 34, XX do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Relator pode decidir monocraticamente quando matéria
+coberta por jurisprudência consolidada (~77% decisões STJ são monocráticas).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Decisão monocrática — art. 34, XX do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 38, §1º do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Em HC, o relator pode conceder a medida liminar
+monocraticamente antes da sessão de julgamento. Corresponde ao TPU 339 (liminar deferida)
+lançado via DESPACHO/DECISÃO do gabinete (SAGWeb 10→20→40). Verificável no Nível 1
+pela presença do mov. TPU 339 no traço.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Concessão de liminar em HC — art. 38, §1º do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 38, §2º do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">Em HC, o relator pode denegar a medida liminar
+monocraticamente. Corresponde ao TPU 792 (não concedida a medida liminar) lançado via
+DESPACHO/DECISÃO do gabinete. Verificável no Nível 1 pela presença do mov. TPU 792.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Denegação de liminar em HC — art. 38, §2º do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraDePrioridade"/>
+        <temFundamentoNoArtigo>art. 91, I do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">HC tem julgamento prioritário independente de pauta.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Prioridade de julgamento — art. 91, I do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art94 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art94">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 94 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">O relator provê, dirige e ordena o processo.
+No contexto do julgamento colegiado, formaliza a obrigação de elaborar o RELATÓRIO E VOTO
+antes da inclusão em pauta. Verificável no Nível 2 pela presença da atividade SAGWeb
+&quot;10: Criação de documento RELATÓRIO E VOTO&quot; no log complementado pelo P3.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Competências do relator — art. 94 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Regra_RISTJ_Art95 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art95">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#RegraRegimental"/>
+        <temFundamentoNoArtigo>art. 95 do RISTJ</temFundamentoNoArtigo>
+        <rdfs:comment xml:lang="pt">O relator apresentará o relatório e submeterá
+o processo ao julgamento na sessão. Formaliza que TPU 3002 (inclusão em mesa) deve
+ser seguido de TPU 239/3001 (julgamento). Verificável no Nível 1 via DATAJUD.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Apresentação em sessão pelo relator — art. 95 do RISTJ</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud#Tributario -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud#Tributario">
+        <rdf:type rdf:resource="http://www.pucpr.br/pm4jud#Especialidade"/>
+        <rdfs:label xml:lang="pt">Tributário</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#Classe_1013 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#Classe_1013">
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#Classe_1064 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#Classe_1064">
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#Classe_15224 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#Classe_15224">
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#Classe_1720 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#Classe_1720">
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_11383"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_12458"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_12475"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_132"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_14093"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_239"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_246"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_26"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_3001"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_3002"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_339"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_443"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_447"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_451"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_51"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_792"/>
+        <movimentoTipicoHC rdf:resource="http://www.pucpr.br/pm4jud/movimentos#Movimento_848"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art123"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art179"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art180"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art202"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art203_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XIX"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XX"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art94"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art95"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/classes#Classe_1722 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/classes#Classe_1722">
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_I"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art110_III"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art177_II"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art34_XVIII"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par1"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art38_Par2"/>
+        <sujeitoA rdf:resource="http://www.pucpr.br/pm4jud#Regra_RISTJ_Art91_I"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_12458 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_12458">
+        <temPapelResultadoHC rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_12475 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_12475">
+        <temPapelResultadoHC rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_3001 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_3001"/>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_3002 -->
+
+    <owl:NamedIndividual rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_3002"/>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_443 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_443">
+        <temPapelResultadoHC rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_447 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_447">
+        <temPapelResultadoHC rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.pucpr.br/pm4jud/movimentos#Movimento_451 -->
+
+    <rdf:Description rdf:about="http://www.pucpr.br/pm4jud/movimentos#Movimento_451">
+        <temPapelResultadoHC rdf:resource="http://www.pucpr.br/pm4jud/classes#Classe_1720"/>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

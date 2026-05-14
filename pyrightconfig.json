@@ -1,0 +1,17 @@
+{
+    "pythonVersion": "3.10",
+    "venvPath": ".",
+    "venv": ".venv",
+    "extraPaths": [
+        "etl",
+        "sim",
+        "opt",
+        "ltlf",
+        "refine",
+        "stat",
+        "tools"
+    ],
+    "typeCheckingMode": "off",
+    "reportMissingImports": "warning",
+    "reportMissingModuleSource": "none"
+}

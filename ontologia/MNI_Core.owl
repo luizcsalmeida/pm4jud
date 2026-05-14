@@ -1,0 +1,1516 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.cnj.jus.br/intercomunicacao-2.2.2#"
+     xml:base="http://www.cnj.jus.br/intercomunicacao-2.2.2"
+     xmlns:mni="http://www.cnj.jus.br/intercomunicacao-2.2.2#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2">
+        <rdfs:comment xml:lang="pt">Ontologia derivada do XSD do Modelo Nacional de Interoperabilidade
+do CNJ versão 2.2.2. Alinhada ao namespace http://www.cnj.jus.br/intercomunicacao-2.2.2
+conforme especificação oficial CNJ.
+
+Este módulo é parte da Framework PM4JUD — Process Mining Framework for Judicial Decision-Making
+Framework de mineração de processos para dados judiciais brasileiros, desenvolvido na PUCPR como adaptação
+do framework PM4SOS (Ferronato, 2022) para o contexto do Superior Tribunal de Justiça (STJ).
+
+COMPONENTES INTEGRADOS:
+• Modelo Nacional de Interoperabilidade (MNI) do CNJ
+• Tabelas Processuais Unificadas (TPU) do CNJ
+  - Classes Processuais (140 classes em hierarquia)
+  - Assuntos Processuais (futuro)
+  - Movimentos Processuais (futuro)
+  - Tipos de Documentos (futuro)
+• Ontologia de Atividades de Gabinetes (futuro)
+• Integração com Event Logs XES
+
+INSTITUIÇÃO: PUCPR - Pontifícia Universidade Católica do Paraná
+PESQUISADOR:
+  • Luiz Claudio Soares de Almeida (Mestrando)
+ORIENTADOR: Prof. Edson Emílio Scalabrin
+PERÍODO: 2024-2026</rdfs:comment>
+        <rdfs:label xml:lang="pt">MNI - Modelo Nacional de Interoperabilidade (Core)</rdfs:label>
+        <rdfs:label xml:lang="en">MNI - National Interoperability Model (Core)</rdfs:label>
+        <owl:versionInfo>2.2.2</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCNPJ -->
+
+    <rdfs:Datatype rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCNPJ">
+        <rdfs:comment xml:lang="pt">Cadastro Nacional de Pessoa Jurídica — exatamente 14 dígitos numéricos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">CNPJ</rdfs:label>
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>\d{14}</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCPF -->
+
+    <rdfs:Datatype rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCPF">
+        <rdfs:comment xml:lang="pt">Cadastro de Pessoa Física — exatamente 11 dígitos numéricos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">CPF</rdfs:label>
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>\d{11}</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoNumeroProcessoCNJ -->
+
+    <rdfs:Datatype rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoNumeroProcessoCNJ">
+        <rdfs:comment xml:lang="pt">Número único do processo conforme Resolução CNJ 65/2008 — 20 dígitos numéricos.
+Alinhado ao simpleType tipoNumeroUnico do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Número de Processo CNJ</rdfs:label>
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>\d{20}</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoOAB -->
+
+    <rdfs:Datatype rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoOAB">
+        <rdfs:comment xml:lang="pt">Inscrição na OAB — formato: CCDDDDDDDC (UF + 7 dígitos + tipo).</rdfs:comment>
+        <rdfs:label xml:lang="pt">OAB</rdfs:label>
+        <owl:equivalentClass>
+            <rdfs:Datatype>
+                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <owl:withRestrictions rdf:parseType="Collection">
+                    <rdf:Description>
+                        <xsd:pattern>[A-Za-z]{2}\d{7}[A-Za-z]{1}</xsd:pattern>
+                    </rdf:Description>
+                </owl:withRestrictions>
+            </rdfs:Datatype>
+        </owl:equivalentClass>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#refereseAPessoa -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#refereseAPessoa">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:comment xml:lang="pt">Relaciona uma parte processual com a pessoa correspondente.</rdfs:comment>
+        <rdfs:label xml:lang="pt">refere-se a pessoa</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#representadoPor -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#representadoPor">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteProcessual"/>
+        <rdfs:comment xml:lang="pt">Indica o representante processual de uma parte.</rdfs:comment>
+        <rdfs:label xml:lang="pt">representado por</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temAssinatura -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temAssinatura">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital"/>
+        <rdfs:comment xml:lang="pt">Relaciona um documento com suas assinaturas digitais (0..*).
+Alinhado ao elemento assinatura de tipoDocumento no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem assinatura</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temAssunto -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temAssunto">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoProcessual"/>
+        <rdfs:comment xml:lang="pt">Relaciona o cabeçalho do processo com seus assuntos processuais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem assunto</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temCabecalho -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temCabecalho">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:comment xml:lang="pt">Relaciona um processo com seu cabeçalho (tipoCabecalhoProcesso).</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem cabeçalho</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temConteudo -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temConteudo">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ConteudoDocumento"/>
+        <rdfs:comment xml:lang="pt">Relaciona um documento com seu conteúdo binário.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem conteúdo</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temDocumento -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temDocumento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:comment xml:lang="pt">Relaciona um processo com seus documentos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem documento</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temEndereco -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temEndereco">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Endereco"/>
+        <rdfs:comment xml:lang="pt">Relaciona uma pessoa com seus endereços (0..*).
+Alinhado ao elemento endereco de tipoPessoa no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem endereço</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temGenero -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temGenero">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaFisica"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa"/>
+        <rdfs:comment xml:lang="pt">Gênero da pessoa física: M | F | D.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem gênero</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temModalidadeRepresentante -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temModalidadeRepresentante">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteProcessual"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:comment xml:lang="pt">Modalidade do representante processual: A | E | M | D | P.
+Alinhado ao atributo modalidadeRepresentanteProcessual do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem modalidade de representante</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temMovimento -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temMovimento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:comment xml:lang="pt">Relaciona um processo com seus movimentos processuais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem movimento</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temOrgaoJulgador -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temOrgaoJulgador">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador"/>
+        <rdfs:comment xml:lang="pt">Relaciona o cabeçalho com o órgão julgador responsável.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem órgão julgador</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temParte -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temParte">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloProcessual"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte"/>
+        <rdfs:comment xml:lang="pt">Relaciona um polo processual com suas partes.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem parte</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temPolo -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temPolo">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloProcessual"/>
+        <rdfs:comment xml:lang="pt">Relaciona o cabeçalho do processo com seus polos processuais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem polo</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temQualificacao -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temQualificacao">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa"/>
+        <rdfs:comment xml:lang="pt">Tipo de qualificação da pessoa (fisica | juridica | autoridade | orgaorepresentacao).</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem qualificação</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temTipoPolo -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temTipoPolo">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloProcessual"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:comment xml:lang="pt">Indica o tipo do polo: AT | PA | TC | FL | TJ | AD | VI.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem tipo de polo</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#temUnidadeFederacao -->
+
+    <owl:ObjectProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#temUnidadeFederacao">
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:comment xml:lang="pt">Relaciona um recurso com uma UF brasileira.
+Domain intencialmente aberto (pode ser usado em Cabecalho, OrgaoJulgador etc.).</rdfs:comment>
+        <rdfs:label xml:lang="pt">tem unidade da federação</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#cnpj -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#cnpj">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaJuridica"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCNPJ"/>
+        <rdfs:comment xml:lang="pt">Cadastro Nacional de Pessoa Jurídica (14 dígitos numéricos).</rdfs:comment>
+        <rdfs:label xml:lang="pt">CNPJ</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoAssunto -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoAssunto">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoProcessual"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código do assunto processual conforme TPU do CNJ.
+Alinhado ao elemento codigoNacional de tipoAssuntoProcessual no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do assunto</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoClasse -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoClasse">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código da classe processual conforme TPU do CNJ (Resolução 46/2007).
+Domain: CabecalhoProcesso (corrigido de ProcessoJudicial na versão anterior).</rdfs:comment>
+        <rdfs:label xml:lang="pt">código da classe</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoMovimento">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoNacional"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código do movimento conforme TPU do CNJ.
+Alinhado ao atributo codigoNacional de tipoMovimentoNacional no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoOrgao -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoOrgao">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código do órgão conforme Resolução CNJ 65/2008.</rdfs:comment>
+        <rdfs:label xml:lang="pt">código do órgão</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#complementoMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#complementoMovimento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Texto complementar do movimento processual.
+Alinhado ao elemento complemento de tipoMovimentoProcessual e
+tipoMovimentoNacional no MNI 2.2.2 (tipoComplemento = xsd:string).</rdfs:comment>
+        <rdfs:label xml:lang="pt">complemento do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#cpf -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#cpf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaFisica"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoCPF"/>
+        <rdfs:comment xml:lang="pt">Cadastro de Pessoa Física (11 dígitos numéricos).</rdfs:comment>
+        <rdfs:label xml:lang="pt">CPF</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#dataAjuizamento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#dataAjuizamento">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data em que o processo foi ajuizado (protocolo de entrada).</rdfs:comment>
+        <rdfs:label xml:lang="pt">data de ajuizamento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#dataAssinatura -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#dataAssinatura">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data e hora em que a assinatura foi realizada.
+Alinhado ao atributo dataAssinatura de tipoAssinatura no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data da assinatura</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#dataMovimento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#dataMovimento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment xml:lang="pt">Data e hora em que o movimento foi registrado.</rdfs:comment>
+        <rdfs:label xml:lang="pt">data do movimento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#hashAssinatura -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#hashAssinatura">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Hash da assinatura digital em base64.
+Alinhado ao atributo assinatura de tipoAssinatura no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">hash da assinatura</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#nome -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#nome">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome completo da pessoa.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#nomeDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#nomeDocumento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome ou descrição do documento.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#nomeOrgao -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#nomeOrgao">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Nome do órgão julgador.</rdfs:comment>
+        <rdfs:label xml:lang="pt">nome do órgão</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#numeroOAB -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#numeroOAB">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteProcessual"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoOAB"/>
+        <rdfs:comment xml:lang="pt">Número de inscrição na OAB (formato: CCDDDDDDDC).
+Obrigatório apenas para modalidade A (advogado) ou E (escritório).</rdfs:comment>
+        <rdfs:label xml:lang="pt">número da OAB</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#numeroProcesso -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#numeroProcesso">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial"/>
+        <rdfs:range rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoNumeroProcessoCNJ"/>
+        <rdfs:comment xml:lang="pt">Número único do processo no formato CNJ (20 dígitos).
+Alinhado ao simpleType tipoNumeroUnico do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">número do processo</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#signatarioLogin -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#signatarioLogin">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="pt">Login do usuário que realizou a assinatura.
+Alinhado ao elemento signatarioLogin de tipoAssinatura no MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">login do signatário</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#tipoDocumento -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#tipoDocumento">
+        <rdfs:domain rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="pt">Código do tipo de documento conforme TPU do CNJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">tipo de documento</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssinaturaDigital">
+        <rdfs:comment xml:lang="pt">Assinatura digital de um documento processual.
+Corresponde ao complexType tipoAssinatura do MNI 2.2.2:
+  assinatura (hash base64), dataAssinatura (dateTime),
+  signatarioLogin (0..*).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Assinatura Digital</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoLocal -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoLocal">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoProcessual"/>
+        <rdfs:comment xml:lang="pt">Assunto específico de um tribunal, não previsto na tabela nacional.
+Pode ser hierárquico (assuntoLocalPai).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Assunto Local</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#AssuntoProcessual">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoAssunto"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Assunto ou matéria do processo conforme TPU do CNJ.
+Corresponde ao complexType tipoAssuntoProcessual do MNI 2.2.2.
+codigoNacional referencia a tabela nacional; pode também ter assuntoLocal.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Assunto Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#AvisoComunicacaoPendente -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#AvisoComunicacaoPendente">
+        <rdfs:comment xml:lang="pt">Notificação de comunicação processual pendente de leitura.
+Corresponde ao complexType tipoAvisoComunicacaoPendente do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Aviso de Comunicação Pendente</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#CabecalhoProcesso">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temAssunto"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temPolo"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Informações principais do processo judicial conforme tipoCabecalhoProcesso
+do MNI 2.2.2: polo (1..*), assunto (1..*), magistradoAtuante (0..*),
+processoVinculado (0..*), orgaoJulgador.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Cabeçalho do Processo</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Cidade -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Cidade">
+        <rdfs:comment xml:lang="pt">Município brasileiro.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Cidade</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#ComunicacaoProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#ComunicacaoProcessual">
+        <rdfs:comment xml:lang="pt">Comunicação oficial entre órgãos sobre um processo.
+Corresponde ao complexType tipoComunicacaoProcessual do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Comunicação Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#ConteudoDocumento -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#ConteudoDocumento">
+        <rdfs:comment xml:lang="pt">Conteúdo binário (base64Binary) de um documento processual.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Conteúdo do Documento</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Documento">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#tipoDocumento"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Documento vinculado a um processo judicial.
+Corresponde ao complexType tipoDocumento do MNI 2.2.2.
+Pode conter conteúdo binário (base64), assinaturas e parâmetros adicionais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Documento Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#DocumentoIdentificacao -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#DocumentoIdentificacao">
+        <rdfs:comment xml:lang="pt">Documento de identificação de uma pessoa (RG, CNH, passaporte etc.).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Documento de Identificação</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Endereco -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Endereco">
+        <rdfs:comment xml:lang="pt">Endereço postal completo (logradouro, número, complemento,
+bairro, cidade, estado, país).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Endereço</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroDiverso"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroFeminino"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroMasculino"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Gênero da pessoa física.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Gênero da Pessoa</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#HistoricoRemessa -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#HistoricoRemessa">
+        <rdfs:comment xml:lang="pt">Histórico de envio/remessa do processo entre órgãos.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Histórico de Remessa</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Intercomunicacao -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Intercomunicacao">
+        <rdfs:comment xml:lang="pt">Estrutura de intercâmbio de informações entre sistemas judiciais.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Intercomunicação</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvocaciaPublica"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvogado"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteDefensoria"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteEscritorio"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteMinisterioPublico"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Tipo de representante processual conforme simpleType
+modalidadeRepresentanteProcessual do MNI 2.2.2:
+  A (advogado) | E (escritório de advocacia) | M (Ministério Público) |
+  D (Defensoria Pública) | P (Advocacia Pública em geral).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Modalidade do Representante Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoLocal -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoLocal">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <owl:disjointWith rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoNacional"/>
+        <rdfs:comment xml:lang="pt">Movimento processual criado localmente pelo tribunal,
+não previsto na TPU nacional (Resolução CNJ 65/2008, art. 4°).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Movimento Local</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoNacional -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoNacional">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoMovimento"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Movimento previsto na Tabela Processual Unificada do CNJ (Resolução 65/2008).
+Corresponde ao complexType tipoMovimentoNacional do MNI 2.2.2.
+Possui codigoMovimento obrigatório e complemento opcional.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Movimento Nacional (TPU)</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#MovimentoProcessual">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#dataMovimento"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Movimento ou andamento de um processo judicial.
+Corresponde ao complexType tipoMovimentoProcessual do MNI 2.2.2.
+Toda instância deve ser ou MovimentoNacional ou MovimentoLocal (choice no XSD).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Movimento Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#OrgaoJulgador">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#codigoOrgao"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#nomeOrgao"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Vara, câmara, turma ou outro órgão responsável por julgar o processo.
+Resolução CNJ 65/2008.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Órgão Julgador</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Parte">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#refereseAPessoa"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Parte de um processo judicial (autor, réu, assistente etc.).
+Corresponde ao complexType tipoParte do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Parte Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temQualificacao"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#nome"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Pessoa física ou jurídica envolvida no processo.
+Corresponde ao complexType tipoPessoa do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Pessoa</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaFisica -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaFisica">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temGenero"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#cpf"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Pessoa natural identificada por CPF.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Pessoa Física</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaJuridica -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PessoaJuridica">
+        <rdfs:subClassOf rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#Pessoa"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#cnpj"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Pessoa jurídica identificada por CNPJ.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Pessoa Jurídica</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloProcessual">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temParte"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temTipoPolo"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Polo ativo, passivo ou outro do processo.
+Corresponde ao complexType tipoPoloProcessual do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Polo Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#ProcessoJudicial">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temCabecalho"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#dataAjuizamento"/>
+                <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#numeroProcesso"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Processo judicial eletrônico ou físico tramitando entre tribunais.
+Corresponde ao complexType tipoProcessoJudicial do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Processo Judicial</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaAutoridade"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaFisica"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaJuridica"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaOrgaoRepresentacao"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Tipo de qualificação da pessoa no processo.
+Alinhado ao simpleType tipoQualificacaoPessoa do MNI 2.2.2:
+  fisica | juridica | autoridade | orgaorepresentacao.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Qualificação de Pessoa</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RelacionamentoPessoal -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RelacionamentoPessoal">
+        <rdfs:comment xml:lang="pt">Relação entre pessoas em um processo (cônjuge, sócio etc.).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Relacionamento Pessoal</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteProcessual">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#temModalidadeRepresentante"/>
+                <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="pt">Representante processual de uma parte (advogado, MP, Defensoria etc.).
+Corresponde ao complexType tipoRepresentanteProcessual do MNI 2.2.2.
+Modalidade obrigatória: A | E | M | D | P.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Representante Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAssistenteDesinteressado"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAtivo"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloFiscalLei"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloPassivo"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTerceiro"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTestemunhaJuizo"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloVitima"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Posição da parte no processo conforme modalidadePoloProcessual do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Tipo de Polo Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AC"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AL"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AM"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AP"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_BA"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_CE"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_DF"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_ES"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_GO"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MA"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MG"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MS"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MT"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PA"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PB"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PE"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PI"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PR"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RJ"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RN"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RO"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RR"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RS"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SC"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SE"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SP"/>
+                    <rdf:Description rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_TO"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment xml:lang="pt">Estados e Distrito Federal do Brasil (27 UFs).</rdfs:comment>
+        <rdfs:label xml:lang="pt">Unidade da Federação</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#VinculacaoProcessual -->
+
+    <owl:Class rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#VinculacaoProcessual">
+        <rdfs:comment xml:lang="pt">Vínculo entre processos (conexão, apenso, continência etc.).
+Corresponde ao complexType tipoVinculacaoProcessual do MNI 2.2.2.</rdfs:comment>
+        <rdfs:label xml:lang="pt">Vinculação Processual</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroDiverso -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroDiverso">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa"/>
+        <rdfs:label xml:lang="pt">D — Diverso</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroFeminino -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroFeminino">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa"/>
+        <rdfs:label xml:lang="pt">F — Feminino</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroMasculino -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroMasculino">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#GeneroPessoa"/>
+        <rdfs:label xml:lang="pt">M — Masculino</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAssistenteDesinteressado -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAssistenteDesinteressado">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">AD — Assistente Simples Desinteressado (Amicus Curiae)</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAtivo -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloAtivo">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">AT — Polo Ativo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloFiscalLei -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloFiscalLei">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:comment xml:lang="pt">Fiscal da lei diverso do Ministério Público (ex.: CADE, ANATEL).</rdfs:comment>
+        <rdfs:label xml:lang="pt">FL — Fiscal da Lei Diverso</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloPassivo -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloPassivo">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">PA — Polo Passivo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTerceiro -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTerceiro">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">TC — Terceiro</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTestemunhaJuizo -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloTestemunhaJuizo">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">TJ — Testemunha do Juízo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloVitima -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#PoloVitima">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#TipoPoloProcessual"/>
+        <rdfs:label xml:lang="pt">VI — Vítima</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaAutoridade -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaAutoridade">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa"/>
+        <rdfs:comment xml:lang="pt">Enfeixamento de funções; agente público com poder decisório.</rdfs:comment>
+        <rdfs:label xml:lang="pt">autoridade — Autoridade</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaFisica -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaFisica">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa"/>
+        <rdfs:comment xml:lang="pt">Pessoa natural (física).</rdfs:comment>
+        <rdfs:label xml:lang="pt">fisica — Pessoa Física</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaJuridica -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaJuridica">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa"/>
+        <rdfs:comment xml:lang="pt">Pessoa jurídica de direito público ou privado.</rdfs:comment>
+        <rdfs:label xml:lang="pt">juridica — Pessoa Jurídica</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaOrgaoRepresentacao -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoaOrgaoRepresentacao">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#QualificacaoPessoa"/>
+        <rdfs:comment xml:lang="pt">Órgão de representação jurídica de interesses sem personalidade jurídica própria.</rdfs:comment>
+        <rdfs:label xml:lang="pt">orgaorepresentacao — Órgão de Representação</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvocaciaPublica -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvocaciaPublica">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:comment xml:lang="pt">Outros órgãos de representação processual pública (AGU, PGE, PGM etc.).</rdfs:comment>
+        <rdfs:label xml:lang="pt">P — Advocacia Pública</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvogado -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteAdvogado">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:label xml:lang="pt">A — Advogado</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteDefensoria -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteDefensoria">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:label xml:lang="pt">D — Defensoria Pública</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteEscritorio -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteEscritorio">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:label xml:lang="pt">E — Escritório de Advocacia</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteMinisterioPublico -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#RepresentanteMinisterioPublico">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#ModalidadeRepresentanteProcessual"/>
+        <rdfs:label xml:lang="pt">M — Ministério Público</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AC -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AC">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">AC — Acre</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AL -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AL">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">AL — Alagoas</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AM -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AM">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">AM — Amazonas</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AP -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_AP">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">AP — Amapá</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_BA -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_BA">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">BA — Bahia</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_CE -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_CE">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">CE — Ceará</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_DF -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_DF">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">DF — Distrito Federal</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_ES -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_ES">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">ES — Espírito Santo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_GO -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_GO">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">GO — Goiás</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MA -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MA">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">MA — Maranhão</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MG -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MG">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">MG — Minas Gerais</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MS -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MS">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">MS — Mato Grosso do Sul</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MT -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_MT">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">MT — Mato Grosso</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PA -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PA">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">PA — Pará</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PB -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PB">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">PB — Paraíba</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PE -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PE">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">PE — Pernambuco</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PI -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PI">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">PI — Piauí</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PR -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_PR">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">PR — Paraná</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RJ -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RJ">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">RJ — Rio de Janeiro</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RN -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RN">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">RN — Rio Grande do Norte</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RO -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RO">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">RO — Rondônia</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RR -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RR">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">RR — Roraima</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RS -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_RS">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">RS — Rio Grande do Sul</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SC -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SC">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">SC — Santa Catarina</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SE -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SE">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">SE — Sergipe</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SP -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_SP">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">SP — São Paulo</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_TO -->
+
+    <owl:NamedIndividual rdf:about="http://www.cnj.jus.br/intercomunicacao-2.2.2#UF_TO">
+        <rdf:type rdf:resource="http://www.cnj.jus.br/intercomunicacao-2.2.2#UnidadeFederacao"/>
+        <rdfs:label xml:lang="pt">TO — Tocantins</rdfs:label>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

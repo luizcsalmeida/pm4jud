@@ -1,0 +1,953 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "UTIL — Diagnóstico cobertura MAPA_TPU vs corpus",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_diagnostico_tpu.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "UTIL — Discovery validar filtros ETL (API DATAJUD)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_discovery.py",
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "UTIL — Conciliação TPU (Dados × OWL × CANONICAL_MAP)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_conciliacao_tpu.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P1 — ETL Etapa 1 (extrai DATAJUD → parquet)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_etl.py",
+            "args": [
+                "--data-inicio",
+                "2024-01-01",
+                "--data-fim",
+                "2024-12-31",
+                "--output-dir",
+                "${workspaceFolder}/output",
+                "--apenas-etapa",
+                "1",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P1 — ETL Etapa 2 (parquet existente → XES)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_etl.py",
+            "args": [
+                "--output-dir",
+                "${workspaceFolder}/output",
+                "--apenas-etapa",
+                "2",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P1 — ETL Completo (Etapas 1+2 — censo 2024)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_etl.py",
+            "args": [
+                "--data-inicio",
+                "2024-01-01",
+                "--data-fim",
+                "2024-12-31",
+                "--output-dir",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P2 — REFINE_1 Completo (3 gabinetes — k calibrados)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P2 — REFINE_1 DEV Rápido (reynaldo, threshold=0,60)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--threshold-p1",
+                "0.60",
+                "--limiar-k",
+                "0.20",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P2 — REFINE_1 FINAL Dissertação (3 gabinetes — k calibrados, threshold=0,80)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--threshold-p1",
+                "0.80",
+                "--limiar-k",
+                "0.20",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P2 — REFINE_1 Apenas reynaldo (k=0,20)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P2 — REFINE_1 Apenas palheiro (k=0,30)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "palheiro",
+                "--limiar-k",
+                "0.30",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P2 — REFINE_1 Apenas schietti (k=0,25)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "schietti",
+                "--limiar-k",
+                "0.25",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P2 — REFINE_1 Debug threshold P1=0,70 (agrupamento agressivo)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine1.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--threshold-p1",
+                "0.70",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 Completo (3 gabs, N=38, seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "palheiro",
+                "schietti",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "42"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT DEV Rápido (reynaldo, N=10, seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--n-assessores",
+                "10",
+                "--seed",
+                "42"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P3 — COMPLEMENT FINAL Dissertação (3 gabinetes, N=38, seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "palheiro",
+                "schietti",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "42"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 Apenas reynaldo (seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "42"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 Apenas palheiro (seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "palheiro",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "42"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 Apenas schietti (seed=42)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "schietti",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "42"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 seed=123 (N=38, replicação alternativa)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "palheiro",
+                "schietti",
+                "--n-assessores",
+                "38",
+                "--seed",
+                "123"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 1 N=10 assessores (sensibilidade)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "palheiro",
+                "schietti",
+                "--n-assessores",
+                "10",
+                "--seed",
+                "42"
+            ],
+            "env": {
+                "FASE_PM4JUD": "1"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P3 — COMPLEMENT Fase 2 Completo (SAGWeb real — pós-STJ+CEP)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_complement.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "palheiro",
+                "schietti"
+            ],
+            "env": {
+                "FASE_PM4JUD": "2"
+            },
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P4 — REFINE_2 Completo (3 gabinetes — k calibrados)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P4 — REFINE_2 DEV Rápido (reynaldo — k=0,20)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--limiar-k",
+                "0.20",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P4 — REFINE_2 FINAL Dissertação (3 gabinetes — k calibrados)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P4 — REFINE_2 Apenas reynaldo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P4 — REFINE_2 Apenas palheiro",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "palheiro",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P4 — REFINE_2 Apenas schietti",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_refine2.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "schietti",
+                "--ontologia",
+                "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P5 — PM Completo (3 gabinetes — k calibrados)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-precisao",
+                "500",
+                "--amostra-fitness",
+                "2000"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P5 — PM DEV Rápido (3 gabinetes — sem precisão)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-fitness",
+                "1000",
+                "--amostra-precisao",
+                "0"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P5 — PM FINAL Dissertação (3 gabinetes — log completo)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-fitness",
+                "0",
+                "--amostra-precisao",
+                "0"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "P5 — PM Apenas reynaldo (k=0,20)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "reynaldo",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-precisao",
+                "500",
+                "--amostra-fitness",
+                "2000"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P5 — PM Apenas palheiro (k=0,30)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "palheiro",
+                "--k-override",
+                "0.30",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-precisao",
+                "500",
+                "--amostra-fitness",
+                "2000"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P5 — PM Apenas schietti (k=0,25)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pm/pm4jud_pm.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--gabinetes",
+                "schietti",
+                "--k-override",
+                "0.25",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--amostra-precisao",
+                "500",
+                "--amostra-fitness",
+                "2000"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+                    
+            "name": "P6 — LTLf Completo (C1-C16 + Metas CNJ — 3 gabinetes)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ltlf/pm4jud_ltlf.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P6 — LTLf Apenas reynaldo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ltlf/pm4jud_ltlf.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--gabinetes", "reynaldo"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P6 — LTLf Apenas palheiro",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ltlf/pm4jud_ltlf.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--gabinetes", "palheiro"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P6 — LTLf Apenas schietti",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ltlf/pm4jud_ltlf.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--gabinetes", "schietti"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P7a — Sim2Log Completo (3 gabinetes × 30 rep.)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/sim/pm4jud_sim2log.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--n-rep",     "30",
+                "--n-casos",   "1000"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P7a — Sim2Log Apenas reynaldo (dev: 5 rep.)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/sim/pm4jud_sim2log.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--gabinetes", "reynaldo",
+                "--n-rep",     "5",
+                "--n-casos",   "200"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P7b — DES Completo (3 gabinetes × 30 rep.)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/sim/pm4jud_des.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--n-rep",     "30"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P7b — DES Apenas reynaldo (dev: 5 rep.)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/sim/pm4jud_des.py",
+            "args": [
+                "--input",     "${workspaceFolder}/output",
+                "--output",    "${workspaceFolder}/output",
+                "--ontologia", "${workspaceFolder}/ontologia",
+                "--gabinetes", "reynaldo",
+                "--n-rep",     "5"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P8 — OPT Completo (3 gab × 30 rep)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/opt/pm4jud_opt.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--n-rep",
+                "30",
+                "--n-pop",
+                "10",
+                "--n-gen",
+                "20"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P8 — OPT Dev (reynaldo × 3 rep × 5 gen)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/opt/pm4jud_opt.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--ontologia",
+                "${workspaceFolder}/ontologia",
+                "--gabinetes",
+                "reynaldo",
+                "--n-rep",
+                "3",
+                "--n-pop",
+                "6",
+                "--n-gen",
+                "5"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P9 — STAT Análise Completa (T̄ + G + κ + η — Apêndice C)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P9 — STAT Apenas T̄ (tempo médio de julgamento)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--variavel",
+                "T_medio"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P9 — STAT Apenas G (coeficiente de Gini)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--variavel",
+                "gini"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P9 — STAT Apenas κ (conformidade regimental)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--variavel",
+                "kappa"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "P9 — STAT Apenas η (aderência Metas CNJ 1/2/4)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "args": [
+                "--input",
+                "${workspaceFolder}/output",
+                "--output",
+                "${workspaceFolder}/output",
+                "--variavel",
+                "eta_cnj"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
