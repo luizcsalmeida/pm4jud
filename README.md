@@ -420,6 +420,9 @@ output/
 └── apendice_c.tex               ← P9: tabelas LaTeX para o Apêndice C
 ```
 
+Os experimentos da Fase 1 (DATAJUD/CNJ) + Dados sintéticos (SAG-Web) foram disponibilizados em endereço no Google drive em virtude da limitação de 100MB de espaço de armazemanento para os repositórios públicos:
+🔗 [Link do Google Drive](https://drive.google.com/drive/folders/1Q5kQRYAK4HyvJBRRmWkmezYM3uOYxH-5?usp=sharing)
+
 ---
 
 ## 14. Estimativas de tempo
