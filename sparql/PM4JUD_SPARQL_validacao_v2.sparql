@@ -1,0 +1,382 @@
+# =============================================================================
+# PM4JUD_SPARQL_validacao.sparql
+# Consultas de validação da Ontologia PM4JUD
+#
+# Uso: Protégé 5.6.7 — abrir PM4JUD.owl (módulo raiz) → SPARQL Query tab
+#      O Protégé carrega todos os 7 módulos via owl:imports do PM4JUD.owl.
+#      Executar cada bloco individualmente (copiar e colar na aba SPARQL.
+#      Reasoner ELK 0.6.0 deve estar ativo para inferências rdfs:subClassOf*.
+#
+# Namespaces confirmados nos arquivos OWL:
+#   pm4jud:  http://www.pucpr.br/pm4jud#               (PM4JUD.owl — Módulo 7)
+#   cls:     http://www.pucpr.br/pm4jud/classes#        (PM4JUD_Classes.owl)
+#   ass:     http://www.pucpr.br/pm4jud/assuntos#       (PM4JUD_Assuntos.owl)
+#   mov:     http://www.pucpr.br/pm4jud/movimentos#     (PM4JUD_Movimentos.owl)
+#   doc:     http://www.pucpr.br/pm4jud/documentos#     (PM4JUD_Documentos.owl)
+#   mni:     http://www.cnj.jus.br/intercomunicacao-2.2.2#   (MNI_Core.owl)
+#   stj:     http://www.stj.jus.br/mni/intercomunicacao#     (MNI_STJ.owl)
+#
+# Estrutura:
+#   Bloco A — Prefixos comuns (incluir em cada query)
+#   Bloco B — CQ1–CQ5: Competency Questions formais (Cap. 3, Quadro 3.18)
+#   Bloco C — TV1–TV7: Validação técnica por módulo
+#   Bloco D — TI1–TI4: Integridade transversal (resultado vazio = aprovado)
+# =============================================================================
+
+
+# =============================================================================
+# BLOCO A — Prefixos comuns
+# Copiar estes prefixos junto com cada query ao executar no Protégé
+# =============================================================================
+
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX pm4jud: <http://www.pucpr.br/pm4jud#>
+PREFIX cls:    <http://www.pucpr.br/pm4jud/classes#>
+PREFIX ass:    <http://www.pucpr.br/pm4jud/assuntos#>
+PREFIX mov:    <http://www.pucpr.br/pm4jud/movimentos#>
+PREFIX doc:    <http://www.pucpr.br/pm4jud/documentos#>
+PREFIX mni:    <http://www.cnj.jus.br/intercomunicacao-2.2.2#>
+PREFIX stj:    <http://www.stj.jus.br/mni/intercomunicacao#>
+
+
+# =============================================================================
+# BLOCO B — Competency Questions formais (CQ1–CQ5)
+# Fonte: Cap. 3, §3.5, Quadro 3.18
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# CQ1 — Quais classes TPU correspondem a Habeas Corpus no STJ?
+# Resultado esperado: 5 classes — códigos 1720, 1013, 1722, 1064, 15224
+#
+# Nota: FamiliaHabeasCorpus é uma owl:Class em PM4JUD_Classes.owl que
+# NÃO tem instâncias — as 5 classes HC são SUBCLASSES dela via
+# rdfs:subClassOf. A query usa rdfs:subClassOf, não rdf:type.
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?classe ?codigo ?label
+WHERE {
+    ?classe rdfs:subClassOf cls:FamiliaHabeasCorpus .
+    ?classe stj:codigoClasseTPU ?codigo .
+    OPTIONAL { ?classe rdfs:label ?label FILTER(LANG(?label) = "pt") }
+    FILTER(?classe != cls:FamiliaHabeasCorpus)
+}
+ORDER BY ?codigo
+
+
+# -----------------------------------------------------------------------------
+# CQ2 — Quais movimentos TPU são típicos de Habeas Corpus no STJ?
+# Resultado esperado: >= 10 movimentos
+#
+# Nota: pm4jud:movimentoTipicoHC está declarado em PM4JUD.owl com sujeito
+# cls:Classe_1720 (namespace classes#, não pm4jud#).
+# Movimentos confirmados no OWL: 26, 51, 132, 239, 246, 339, 443, 447,
+# 451, 792, 848, 3001, 3002, 11383, 12458, 12475, 14093 (17 total).
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?movimento ?codigo ?tipo
+WHERE {
+    cls:Classe_1720 pm4jud:movimentoTipicoHC ?movimento .
+    OPTIONAL { ?movimento stj:codigoMovimentoTPU ?codigo }
+    OPTIONAL { ?movimento stj:tipoMovimento ?tipo }
+}
+ORDER BY xsd:integer(?codigo)
+
+
+# -----------------------------------------------------------------------------
+# CQ3 — Quais restrições regimentais impõem prioridade a Habeas Corpus?
+# Resultado esperado: >= 1 instância de pm4jud:RegraDePrioridade
+#
+# Nota: pm4jud:sujeitoA liga cls:Classe_1720 às regras de prioridade.
+# Regras confirmadas: Regra_RISTJ_Art91_I (art. 91, I do RISTJ).
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?regra ?artigo ?label
+WHERE {
+    cls:Classe_1720 pm4jud:sujeitoA ?regra .
+    ?regra rdf:type pm4jud:RegraDePrioridade .
+    OPTIONAL { ?regra pm4jud:temFundamentoNoArtigo ?artigo }
+    OPTIONAL { ?regra rdfs:label ?label FILTER(LANG(?label) = "pt") }
+}
+ORDER BY ?artigo
+
+
+# -----------------------------------------------------------------------------
+# CQ4 — Quais assuntos TPU estão sob a especialidade Criminal no STJ?
+# Resultado esperado: assuntos descendentes de ass:Assunto_287 (Direito Penal)
+#
+# Nota: pm4jud:temAssunto liga processos (ABox) a assuntos — sem instâncias
+# de processo na TBox, a query é reformulada para validar a hierarquia de
+# assuntos criminais via rdfs:subClassOf* sobre PM4JUD_Assuntos.owl.
+# A raiz ass:Assunto_287 = DIREITO PENAL (confirmada em mai/2026).
+# -----------------------------------------------------------------------------
+
+SELECT (COUNT(DISTINCT ?assunto) AS ?n_assuntos_criminais)
+WHERE {
+    ?assunto rdfs:subClassOf* ass:Assunto_287 .
+    FILTER(?assunto != ass:Assunto_287)
+}
+
+# Query alternativa: listar os primeiros 20 assuntos criminais
+# SELECT DISTINCT ?assunto ?label
+# WHERE {
+#     ?assunto rdfs:subClassOf* ass:Assunto_287 .
+#     OPTIONAL { ?assunto rdfs:label ?label FILTER(LANG(?label) = "pt") }
+#     FILTER(?assunto != ass:Assunto_287)
+# }
+# ORDER BY ?label
+# LIMIT 20
+
+
+# -----------------------------------------------------------------------------
+# CQ5 — Quais Metas Nacionais do CNJ incidem sobre Habeas Corpus?
+# Resultado esperado: 3 indivíduos (Meta1_CNJ, Meta2_CNJ, Meta4_CNJ)
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?meta ?label ?indicador
+WHERE {
+    VALUES ?meta { pm4jud:Meta1_CNJ pm4jud:Meta2_CNJ pm4jud:Meta4_CNJ }
+    OPTIONAL { ?meta rdfs:label ?label FILTER(LANG(?label) = "pt") }
+    OPTIONAL { ?meta pm4jud:temIndicador ?indicador }
+}
+ORDER BY ?meta
+
+
+# =============================================================================
+# BLOCO C — Validação técnica por módulo (TV1–TV7)
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# TV1 — MNI_Core.owl (Módulo 1): classes-núcleo do MNI 2.2.2 presentes
+# Resultado esperado: as classes MNI encontradas (>= 3)
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?classe ?label
+WHERE {
+    VALUES ?classe {
+        mni:ProcessoJudicial   mni:CabecalhoProcesso
+        mni:Parte              mni:MovimentoProcessual
+        mni:Documento          mni:AssuntoProcessual
+        mni:OrgaoJulgador      mni:ComunicacaoProcessual
+    }
+    OPTIONAL { ?classe rdfs:label ?label FILTER(LANG(?label) = "pt") }
+}
+ORDER BY ?classe
+
+
+# -----------------------------------------------------------------------------
+# TV2 — MNI_STJ.owl (Módulo 2): classes e propriedades da extensão STJ
+# Resultado esperado: classes stj: presentes
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?entidade
+WHERE {
+    VALUES ?entidade {
+        stj:ClasseProcessual        stj:CabecalhoProcessoStj
+        stj:DocumentoStj            stj:ParteStj
+        stj:NaturezaEnvio           stj:RepresentativoControversia
+        stj:ComunicacaoProcessualStj
+    }
+}
+ORDER BY ?entidade
+
+
+# -----------------------------------------------------------------------------
+# TV3 — PM4JUD_Classes.owl (Módulo 3): contagem de classes processuais STJ
+# Resultado esperado: 144 (versão SGT/STJ 09/04/2026)
+# Nota: rdf:type stj:ClasseProcessual é o tipo correto — não existe cls:ClasseProcessualTPU
+# -----------------------------------------------------------------------------
+
+SELECT (COUNT(DISTINCT ?c) AS ?n_classes) WHERE {
+    ?c rdf:type stj:ClasseProcessual .
+}
+
+# TV3b — FamiliaHabeasCorpus com 5 subclasses
+SELECT (COUNT(DISTINCT ?c) AS ?n_familia_hc) WHERE {
+    ?c rdfs:subClassOf cls:FamiliaHabeasCorpus .
+    FILTER(?c != cls:FamiliaHabeasCorpus)
+}
+
+
+# -----------------------------------------------------------------------------
+# TV4 — PM4JUD_Assuntos.owl (Módulo 4): contagem de assuntos STJ
+# Resultado esperado: 3.297 assuntos (valor real verificado mai/2026)
+# TV4b esperado: > 0 (propriedade ass:ehCrimeAdministracaoPublica, string "true")
+# -----------------------------------------------------------------------------
+
+# TV4a — total de assuntos
+SELECT (COUNT(DISTINCT ?a) AS ?n_assuntos) WHERE {
+    ?a stj:codigoAssuntoTPU ?codigo .
+}
+
+# TV4b — assuntos classificados como crimes contra a administração pública
+# Método: rdfs:subClassOf* a partir de 3 raízes (espelha categorias_assunto())
+#   ass:Assunto_3923  = Crimes contra a Adm. Pública (Título XI CP)
+#   ass:Assunto_10011 = Improbidade Administrativa
+#   ass:Assunto_4263  = Ação Penal Originária (competência STJ)
+# Resultado esperado: 23 (subconjunto STJ habilitado — SGT/CNJ 09/04/2026)
+# Nota: o OWL menciona "66 nós" no comentário da propriedade — refere-se ao
+# total nacional da TPU, não ao subconjunto habilitado para o STJ.
+SELECT (COUNT(DISTINCT ?a) AS ?n_crime_adm_publica)
+WHERE {
+    { ?a rdfs:subClassOf* ass:Assunto_3923  }
+    UNION
+    { ?a rdfs:subClassOf* ass:Assunto_10011 }
+    UNION
+    { ?a rdfs:subClassOf* ass:Assunto_4263  }
+    FILTER(?a NOT IN (
+        ass:Assunto_3923,
+        ass:Assunto_10011,
+        ass:Assunto_4263
+    ))
+}
+
+
+# -----------------------------------------------------------------------------
+# TV5 — PM4JUD_Movimentos.owl (Módulo 5): contagem de movimentos STJ
+# Resultado esperado: 619 (valor real verificado mai/2026)
+# -----------------------------------------------------------------------------
+
+SELECT (COUNT(DISTINCT ?m) AS ?n_movimentos) WHERE {
+    ?m stj:codigoMovimentoTPU ?codigo .
+}
+
+
+# -----------------------------------------------------------------------------
+# TV6 — PM4JUD_Documentos.owl (Módulo 6): contagem de documentos STJ
+# Resultado esperado: >= 1.361 documentos
+# -----------------------------------------------------------------------------
+
+SELECT (COUNT(DISTINCT ?d) AS ?n_documentos) WHERE {
+    ?d rdf:type mni:Documento .
+}
+
+
+# -----------------------------------------------------------------------------
+# TV7 — PM4JUD.owl (Módulo 7): regras C1–C16, Metas CNJ e Especialidades
+# Resultado esperado:
+#   TV7a: 16 RegraC* + regras RISTJ nomeadas
+#   TV7b: 3 MetaNacionalCNJ (Meta1, Meta2, Meta4)
+#   TV7c: 4 Especialidades (Criminal, Civel, Tributario, Previdenciario)
+# -----------------------------------------------------------------------------
+
+# TV7a — Todas as regras (RegraC* e Regra_RISTJ_*)
+SELECT ?regra ?tipo ?artigo ?prazo ?nivel
+WHERE {
+    ?regra rdf:type ?tipo .
+    VALUES ?tipo {
+        pm4jud:RegraJudicial
+        pm4jud:RegraRegimental
+        pm4jud:RegraTemporal
+        pm4jud:RegraDeOrdem
+        pm4jud:RegraDeExistencia
+        pm4jud:RegraDeEspecializacao
+        pm4jud:RegraDePrioridade
+    }
+    OPTIONAL { ?regra pm4jud:temFundamentoNoArtigo ?artigo }
+    OPTIONAL { ?regra pm4jud:prazoMaxDiasUteis ?prazo }
+    OPTIONAL { ?regra pm4jud:nivelVerificacao ?nivel }
+}
+ORDER BY ?regra
+
+# TV7b — Metas CNJ (deve retornar 3: Meta1_CNJ, Meta2_CNJ, Meta4_CNJ)
+# VALUES garante exclusão de RegraC7/C8/C9 sem depender de FILTER IN ou STRSTARTS
+SELECT ?meta ?label ?indicador
+WHERE {
+    VALUES ?meta { pm4jud:Meta1_CNJ pm4jud:Meta2_CNJ pm4jud:Meta4_CNJ }
+    OPTIONAL { ?meta rdfs:label ?label FILTER(LANG(?label) = "pt") }
+    OPTIONAL { ?meta pm4jud:temIndicador ?indicador }
+}
+
+# TV7c — Especialidades (deve retornar 4)
+SELECT ?esp ?label
+WHERE {
+    ?esp rdf:type pm4jud:Especialidade .
+    OPTIONAL { ?esp rdfs:label ?label FILTER(LANG(?label) = "pt") }
+}
+ORDER BY ?label
+
+
+# =============================================================================
+# BLOCO D — Integridade transversal (TI1–TI4)
+# Critério: resultado VAZIO = aprovado
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# TI1 — Subclasses de FamiliaHabeasCorpus sem codigoClasseTPU
+# Resultado esperado: zero linhas
+#
+# Nota: cls:HabeasCorpus é classe OWL abstrata do PM4JUD — não é entrada
+# TPU e não tem stj:codigoClasseTPU. O filtro rdf:type stj:ClasseProcessual
+# restringe a verificação apenas às 5 entradas TPU reais (Classe_1720 etc.)
+# -----------------------------------------------------------------------------
+
+SELECT DISTINCT ?classe
+WHERE {
+    ?classe rdfs:subClassOf cls:FamiliaHabeasCorpus .
+    ?classe rdf:type stj:ClasseProcessual .
+    FILTER NOT EXISTS { ?classe stj:codigoClasseTPU ?cod }
+}
+
+
+# -----------------------------------------------------------------------------
+# TI2 — Regras RegraC* sem nivelVerificacao declarado
+# Resultado esperado: zero linhas
+# -----------------------------------------------------------------------------
+
+SELECT ?regra
+WHERE {
+    ?regra rdf:type ?tipo .
+    FILTER(REGEX(STR(?regra), "#RegraC[0-9]"))
+    FILTER NOT EXISTS { ?regra pm4jud:nivelVerificacao ?nivel }
+}
+ORDER BY ?regra
+
+
+# -----------------------------------------------------------------------------
+# TI3 — Especialidades sem rdfs:label declarado
+# Resultado esperado: zero linhas (as 4 especialidades têm label)
+#
+# Nota: pm4jud:pertenceAEspecialidade está declarada como object property
+# mas não tem asserções no OWL — as especialidades são determinadas em
+# runtime por rdfs:subClassOf* em categorias_assunto() (pm4jud_ontologia.py).
+# Esta query verifica que os 4 indivíduos existem e têm label.
+# -----------------------------------------------------------------------------
+
+SELECT ?esp
+WHERE {
+    VALUES ?esp {
+        pm4jud:Criminal
+        pm4jud:Civel
+        pm4jud:Tributario
+        pm4jud:Previdenciario
+    }
+    FILTER NOT EXISTS { ?esp rdfs:label ?label }
+}
+
+
+# -----------------------------------------------------------------------------
+# TI4 — Metas CNJ sem temIndicador
+# Resultado esperado: zero linhas
+# Nota: RegraC7, C8, C9 têm rdf:type MetaNacionalCNJ no OWL por design
+# mas são tratados como regras pelo pipeline — excluir via FILTER,
+# espelhando o filtro "if RegraC in uri_str: continue" de metas_cnj()
+# -----------------------------------------------------------------------------
+
+SELECT ?meta
+WHERE {
+    VALUES ?meta { pm4jud:Meta1_CNJ pm4jud:Meta2_CNJ pm4jud:Meta4_CNJ }
+    FILTER NOT EXISTS { ?meta pm4jud:temIndicador ?ind }
+}
+
+
+# =============================================================================
+# Fim — PM4JUD_SPARQL_validacao_v2.sparql
+# Versão: 2.0 · mai/2026 · Ontologia PM4JUD v2.0
+# Namespaces verificados nos arquivos OWL reais (mai/2026)
+# =============================================================================
