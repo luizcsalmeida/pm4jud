@@ -90,7 +90,7 @@ P9 STAT ← P8 OPT ← P7b DES ← P7a SIM2LOG ← P6 LTLf ←┘
 | P1 | `etl/pm4jud_etl.py` | 1 | API DATAJUD/CNJ | `etl_<gab>.xes` | Extração dos movimentos TPU via API pública CNJ |
 | P2 | `refine/pm4jud_refine1.py` | 1 | `etl_<gab>.xes` | `refine1_<gab>.xes` | Pré-processamento D'Castro: limpeza e canonicalização TPU |
 | P3 | `complement/pm4jud_complement.py` | 1 | `refine1_<gab>.xes` | `complement_<gab>.xes` | Injeção de eventos `[SIM-ASSESSOR]` via SPARQL da Ontologia (C1–C16) |
-| P4 | `etl/pm4jud_refine2.py` | 1 | `complement_<gab>.xes` | `refine2_<gab>.xes` | Pré-processamento D'Castro: filtro por limiar k (MF1 ≥ 0,75) |
+| P4 | `refine/pm4jud_refine2.py` | 1 | `complement_<gab>.xes` | `refine2_<gab>.xes` | Pré-processamento D'Castro: filtro por limiar k (MF1 ≥ 0,75) |
 | P5 | `pm/pm4jud_pm.py` | 2 | `refine2_<gab>.xes` | `e_s/e_o/e_c.*` | Descoberta de modelos (IMf) + estimação de parâmetros DES |
 | P6 | `ltlf/pm4jud_ltlf.py` | 2 | `complement_<gab>.xes` + Ontologia | `ltlf_<gab>.json` | Verificação declarativa LTLf (constraints C1–C16) |
 | P7a | `sim2log/pm4jud_sim2log.py` | 3 | `e_s/e_o/e_c.*` | `sim2log_<gab>_rep*.xes` | Geração de 30 logs sintéticos `[SIM-DES]` por gabinete |
