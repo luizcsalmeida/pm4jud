@@ -4,11 +4,15 @@
     "venv": ".venv",
     "extraPaths": [
         "etl",
-        "sim",
-        "opt",
-        "ltlf",
         "refine",
+        "complement",
+        "pm",
+        "ltlf",
+        "sim2log",
+        "des",
+        "opt",
         "stat",
+        "viz",
         "tools"
     ],
     "typeCheckingMode": "off",
