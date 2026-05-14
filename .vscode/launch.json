@@ -757,10 +757,10 @@
             "justMyCode": true
         },
         {
-            "name": "P7a — Sim2Log Completo (3 gabinetes × 30 rep.)",
+            "name": "P7a — 2Log Completo (3 gabinetes × 30 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim/pm4jud_sim2log.py",
+            "program": "${workspaceFolder}/sim2log/pm4jud_sim2log.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -776,7 +776,7 @@
             "name": "P7a — Sim2Log Apenas reynaldo (dev: 5 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim/pm4jud_sim2log.py",
+            "program": "${workspaceFolder}/sim2log/pm4jud_sim2log.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -793,7 +793,7 @@
             "name": "P7b — DES Completo (3 gabinetes × 30 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim/pm4jud_des.py",
+            "program": "${workspaceFolder}/sim2log/pm4jud_des.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -808,7 +808,7 @@
             "name": "P7b — DES Apenas reynaldo (dev: 5 rep.)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/sim/pm4jud_des.py",
+            "program": "${workspaceFolder}/sim2log/pm4jud_des.py",
             "args": [
                 "--input",     "${workspaceFolder}/output",
                 "--output",    "${workspaceFolder}/output",
@@ -870,7 +870,7 @@
             "name": "P9 — STAT Análise Completa (T̄ + G + κ + η — Apêndice C)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
@@ -885,7 +885,7 @@
             "name": "P9 — STAT Apenas T̄ (tempo médio de julgamento)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/etl/pm4jud_stat.py",
+            "program": "${workspaceFolder}/stat/pm4jud_stat.py",
             "args": [
                 "--input",
                 "${workspaceFolder}/output",
